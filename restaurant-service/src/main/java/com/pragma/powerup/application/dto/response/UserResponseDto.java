@@ -10,7 +10,6 @@ public class UserResponseDto {
     private String name;
     private String surname;
     private Long identificationNumber;
-    private String phoneNumber;
     private String email;
     private RoleResponseDto role;
 }

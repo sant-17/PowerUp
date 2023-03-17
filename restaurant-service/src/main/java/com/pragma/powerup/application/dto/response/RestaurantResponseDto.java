@@ -5,12 +5,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserResponseDto {
+public class RestaurantResponseDto {
     private Long id;
     private String name;
-    private String surname;
-    private Long identificationNumber;
+    private String address;
+    private Long owner;
     private String phoneNumber;
-    private String email;
-    private RoleResponseDto role;
+    private Long nit;
+    private String logoUrl;
 }
