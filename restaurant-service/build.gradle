@@ -26,7 +26,8 @@ ext {
 	lombokMapstructBindingVersion = "0.2.0"
 	mySqlConnectorVersion = "8.0.32"
 	openApiVersion = "1.6.11"
-	springCloudVersion =  "2021.0.6"
+	springCloudVersion = "3.1.4"
+	springSecurityVersion = "2.7.9"
 }
 
 dependencies {
@@ -35,9 +36,13 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
 	developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
 	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.6'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+
+	implementation "org.springframework.boot:spring-boot-starter-security:${springSecurityVersion}"
+
+	implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${springCloudVersion}"
+	implementation "org.springframework.cloud:spring-cloud-starter-config:${springCloudVersion}"
+	implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:${springCloudVersion}"
+	implementation "org.springframework.cloud:spring-cloud-starter-bootstrap:${springCloudVersion}"
 
 	runtimeOnly "mysql:mysql-connector-java:${mySqlConnectorVersion}"
 
@@ -49,12 +54,6 @@ dependencies {
 
 	implementation "org.springdoc:springdoc-openapi-ui:${openApiVersion}"
 	implementation "org.springdoc:springdoc-openapi-webflux-ui:${openApiVersion}"
-}
-
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
 }
 
 tasks.named('test') {
