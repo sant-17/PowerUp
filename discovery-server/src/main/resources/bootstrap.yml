@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: discovery-server
+
+  cloud:
+    config:
+      uri: http://localhost:8081
+      username: root
+      password: 123
+      profile: dev
