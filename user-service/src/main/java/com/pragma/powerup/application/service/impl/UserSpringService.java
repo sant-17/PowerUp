@@ -23,9 +23,13 @@ public class UserSpringService implements IUserSpringService {
     private final IUserResponseMapper userResponseMapper;
 
     @Override
-    public void saveUser(UserRequestDto userRequestDto) {
+    public void saveUserAsOwner(UserRequestDto userRequestDto) {
+        userRequestDto.setRole(2L);
         UserModel userModel = userRequestMapper.toUser(userRequestDto);
-        userServicePort.saveUser(userModel);
+        if (!userModel.getPhoneNumber().substring(0,1).equals("+")){
+            userModel.setPhoneNumber("+".concat(userModel.getPhoneNumber()));
+        }
+        userServicePort.saveUserAsOwner(userModel);
     }
 
     @Override

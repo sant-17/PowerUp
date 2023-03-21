@@ -30,7 +30,7 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
         } catch (Exception ex){
             throw new NoUserFoundException();
         }
-        if (!userResponseDto.getRole().getName().equals("Administrador")){
+        if (!userResponseDto.getRole().getName().equals("PROPIETARIO")){
             throw new NonAdminUserException();
         }
         RestaurantEntity restaurantEntity = restaurantRepository.save(restaurantEntityMapper.toEntity(restaurantModel));

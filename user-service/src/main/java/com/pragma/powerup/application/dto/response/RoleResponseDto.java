@@ -6,7 +6,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class RoleResponseDto {
     private String name;
     private String description;

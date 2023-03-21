@@ -2,6 +2,7 @@ package com.pragma.powerup.infrastructure.exceptionhandler;
 
 import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
 import com.pragma.powerup.infrastructure.exception.NoUserFoundException;
+import com.pragma.powerup.infrastructure.exception.UserAlreadyExistsException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,12 @@ public class ControllerAdvisor {
     public ResponseEntity<Map<String, String>> handleNoUserFoundException(NoUserFoundException ignoredNoUserFoundException){
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NO_USER_FOUND.getMessage()));
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> handleUserAlreadyExistsException(UserAlreadyExistsException ignoredUserAlreadyExistsException){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_ALREADY_EXISTS.getMessage().concat(ignoredUserAlreadyExistsException.getParam())));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

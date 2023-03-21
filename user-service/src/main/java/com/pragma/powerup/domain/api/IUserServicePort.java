@@ -5,8 +5,7 @@ import com.pragma.powerup.domain.model.UserModel;
 import java.util.List;
 
 public interface IUserServicePort {
-    void saveUser(UserModel userModel);
+    void saveUserAsOwner(UserModel userModel);
     List<UserModel> getAllUsers();
-
     UserModel getUserById(Long id);
 }

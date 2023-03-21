@@ -34,4 +34,10 @@ public class DishRestController {
     public ResponseEntity<DishResponseDto> getDishById(@PathVariable("id") Long id){
         return ResponseEntity.ok(dishSpringService.getDishById(id));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateDishById(@PathVariable("id") Long id, @RequestBody DishRequestDto dishRequestDto){
+        dishSpringService.updateDishById(id, dishRequestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

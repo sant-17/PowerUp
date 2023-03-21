@@ -28,12 +28,12 @@ public class UserEntity {
     @Column(name = "celular")
     private String phoneNumber;
 
-    @Column(name = "correo")
+    @Column(name = "correo", unique = true)
     private String email;
 
     @Column(name = "clave")
     private String password;
     @ManyToOne
-    @JoinColumn(name = "id_rol", nullable = false)
+    @JoinColumn(name = "id_rol")
     private RoleEntity role;
 }

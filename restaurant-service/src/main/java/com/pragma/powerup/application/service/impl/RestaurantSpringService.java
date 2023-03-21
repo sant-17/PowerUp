@@ -24,6 +24,9 @@ public class RestaurantSpringService implements IRestaurantSpringService {
     @Override
     public void saveRestaurant(RestaurantRequestDto restaurantRequestDto) {
         RestaurantModel restaurantModel = restaurantRequestMapper.toRestaurant(restaurantRequestDto);
+        if (!restaurantModel.getPhoneNumber().substring(0,1).equals("+")){
+            restaurantModel.setPhoneNumber("+".concat(restaurantModel.getPhoneNumber()));
+        }
         restaurantServicePort.saveRestaurant(restaurantModel);
     }
 

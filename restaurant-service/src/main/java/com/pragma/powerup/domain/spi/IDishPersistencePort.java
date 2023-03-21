@@ -8,4 +8,5 @@ public interface IDishPersistencePort {
     DishModel saveDish(DishModel dishModel);
     List<DishModel> getAllDishes();
     DishModel getDishById(Long id);
+    DishModel updateDishById(Long id, DishModel dishModel);
 }

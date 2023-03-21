@@ -9,4 +9,5 @@ public interface IDishSpringService {
     void saveDish(DishRequestDto dishRequestDto);
     List<DishResponseDto> getAllDishes();
     DishResponseDto getDishById(Long id);
+    void updateDishById(Long id, DishRequestDto dishRequestDto);
 }

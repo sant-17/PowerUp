@@ -1,6 +1,7 @@
 package com.pragma.powerup.application.service.impl;
 
 import com.pragma.powerup.application.dto.request.RoleRequestDto;
+import com.pragma.powerup.application.dto.response.RoleResponseDto;
 import com.pragma.powerup.application.mapper.IRoleRequestMapper;
 import com.pragma.powerup.application.mapper.IRoleResponseMapper;
 import com.pragma.powerup.application.service.IRoleSpringService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -22,5 +24,10 @@ public class RoleSpringService implements IRoleSpringService {
     public void saveRole(RoleRequestDto roleRequestDto) {
         RoleModel roleModel = roleRequestMapper.toRole(roleRequestDto);
         roleServicePort.saveRole(roleModel);
+    }
+
+    @Override
+    public List<RoleResponseDto> getAllUsers() {
+        return roleResponseMapper.toResponseList(roleServicePort.getAllRoles());
     }
 }

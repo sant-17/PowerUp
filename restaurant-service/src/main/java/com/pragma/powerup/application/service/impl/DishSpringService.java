@@ -37,4 +37,10 @@ public class DishSpringService implements IDishSpringService {
     public DishResponseDto getDishById(Long id) {
         return dishResponseMapper.toResponse(dishServicePort.getDishById(id));
     }
+
+    @Override
+    public void updateDishById(Long id, DishRequestDto dishRequestDto) {
+        DishModel dishModel = dishRequestMapper.toDish(dishRequestDto);
+        dishServicePort.updateDishById(id, dishModel);
+    }
 }

@@ -17,9 +17,9 @@ public class UserUseCase implements IUserServicePort {
     }
 
     @Override
-    public void saveUser(UserModel userModel) {
+    public void saveUserAsOwner(UserModel userModel) {
         userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
-        userPersistencePort.saveUser(userModel);
+        userPersistencePort.saveUserAsOwner(userModel);
     }
 
     @Override

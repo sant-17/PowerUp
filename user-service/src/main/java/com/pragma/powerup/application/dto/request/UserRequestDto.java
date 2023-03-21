@@ -3,6 +3,7 @@ package com.pragma.powerup.application.dto.request;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,7 +21,7 @@ public class UserRequestDto {
     @NotNull(message = "Field 'identificationNumber' it's required")
     private Long identificationNumber;
 
-    @Pattern(regexp = "^\\+573[0-2]\\d{8}$", message = "Field 'numberPhone' must be a valid number phone. Enter the format +573...")
+    @Pattern(regexp = "^\\+?573[0-2]\\d{8}$", message = "Field 'numberPhone' must be a valid number phone. Enter the format +573...")
     @NotBlank(message = "Field 'phoneNumber' it's required")
     private String phoneNumber;
 
@@ -31,6 +32,6 @@ public class UserRequestDto {
     @NotBlank(message = "Field 'password' it's required")
     private String password;
 
-    @NotNull(message = "Field 'role' it's required (as number)")
+    @Transient
     private Long role;
 }

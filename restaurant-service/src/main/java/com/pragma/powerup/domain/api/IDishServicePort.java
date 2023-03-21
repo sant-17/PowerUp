@@ -8,4 +8,5 @@ public interface IDishServicePort {
     void saveDish(DishModel dishModel);
     List<DishModel> getAllDishes();
     DishModel getDishById(Long id);
+    void updateDishById(Long id, DishModel dishModel);
 }

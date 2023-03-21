@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.9'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.pragma'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "2021.0.4")
+    springSecurityVersion="2.7.9"
+    springConfigServerVersion="3.1.4"
+    springBootstrapVersion="3.1.4"
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation "org.springframework.boot:spring-boot-starter-security:${springSecurityVersion}"
+    implementation "org.springframework.cloud:spring-cloud-config-server:${springConfigServerVersion}"
+    implementation "org.springframework.cloud:spring-cloud-starter-bootstrap:${springBootstrapVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springSecurityVersion}"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

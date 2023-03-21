@@ -37,7 +37,7 @@ public class UserRestController {
     })
     @PostMapping("/")
     public ResponseEntity<Void> saveUser(@Valid @RequestBody UserRequestDto userRequestDto){
-        userSpringService.saveUser(userRequestDto);
+        userSpringService.saveUserAsOwner(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
