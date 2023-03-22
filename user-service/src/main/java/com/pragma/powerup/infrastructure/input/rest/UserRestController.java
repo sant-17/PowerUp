@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 public class UserRestController {
     private final IUserSpringService userSpringService;
@@ -81,8 +81,13 @@ public class UserRestController {
                     content = @Content
             )
     })
-    @GetMapping("/{id}")
+    @GetMapping("id/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable("id") Long id){
         return ResponseEntity.ok(userSpringService.getUserById(id));
+    }
+
+    @GetMapping("email/{email}")
+    public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable("email") String email){
+        return ResponseEntity.ok(userSpringService.getUserByEmail(email));
     }
 }

@@ -8,4 +8,5 @@ public interface IUserSpringService {
     void saveUserAsOwner(UserRequestDto userRequestDto);
     List<UserResponseDto> getAllUsers();
     UserResponseDto getUserById(Long id);
+    UserResponseDto getUserByEmail(String email);
 }

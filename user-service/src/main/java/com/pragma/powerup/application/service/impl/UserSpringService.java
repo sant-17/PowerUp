@@ -41,4 +41,9 @@ public class UserSpringService implements IUserSpringService {
     public UserResponseDto getUserById(Long id) {
         return userResponseMapper.toResponse(userServicePort.getUserById(id));
     }
+
+    @Override
+    public UserResponseDto getUserByEmail(String email) {
+        return userResponseMapper.toResponse(userServicePort.getUserByEmail(email));
+    }
 }

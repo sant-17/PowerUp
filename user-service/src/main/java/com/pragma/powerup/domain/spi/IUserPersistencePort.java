@@ -8,4 +8,5 @@ public interface IUserPersistencePort {
     UserModel saveUserAsOwner(UserModel userModel);
     List<UserModel> getAllUsers();
     UserModel getUserById(Long id);
+    UserModel getUserByEmail(String email);
 }
