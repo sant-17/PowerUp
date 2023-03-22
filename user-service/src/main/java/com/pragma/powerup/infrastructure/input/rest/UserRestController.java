@@ -81,12 +81,12 @@ public class UserRestController {
                     content = @Content
             )
     })
-    @GetMapping("id/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable("id") Long id){
         return ResponseEntity.ok(userSpringService.getUserById(id));
     }
 
-    @GetMapping("email/{email}")
+    @GetMapping("/email/{email}")
     public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable("email") String email){
         return ResponseEntity.ok(userSpringService.getUserByEmail(email));
     }
