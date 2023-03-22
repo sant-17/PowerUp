@@ -12,6 +12,7 @@ import com.pragma.powerup.infrastructure.out.jpa.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 public class UserJpaAdapter implements IUserPersistencePort {
@@ -45,6 +46,11 @@ public class UserJpaAdapter implements IUserPersistencePort {
 
     @Override
     public UserModel getUserByEmail(String email) {
-        return userEntityMapper.toUserModel(userRepository.findByEmail(email).get());
+        try {
+            return userEntityMapper.toUserModel(userRepository.findByEmail(email).get());
+        }
+        catch (NoSuchElementException ex){
+            throw new RuntimeException("User not found by requested email ".concat(email));
+        }
     }
 }

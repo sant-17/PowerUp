@@ -1,7 +1,9 @@
 package com.pragma.powerup.application.service.impl;
 
 import com.pragma.powerup.application.dto.request.UserRequestDto;
+import com.pragma.powerup.application.dto.response.UserPswResponseDto;
 import com.pragma.powerup.application.dto.response.UserResponseDto;
+import com.pragma.powerup.application.mapper.IUserPswResponseMapper;
 import com.pragma.powerup.application.mapper.IUserRequestMapper;
 import com.pragma.powerup.application.mapper.IUserResponseMapper;
 import com.pragma.powerup.application.service.IUserSpringService;
@@ -21,6 +23,7 @@ public class UserSpringService implements IUserSpringService {
     private final IUserServicePort userServicePort;
     private final IUserRequestMapper userRequestMapper;
     private final IUserResponseMapper userResponseMapper;
+    private final IUserPswResponseMapper userPswResponseMapper;
 
     @Override
     public void saveUserAsOwner(UserRequestDto userRequestDto) {
@@ -43,7 +46,7 @@ public class UserSpringService implements IUserSpringService {
     }
 
     @Override
-    public UserResponseDto getUserByEmail(String email) {
-        return userResponseMapper.toResponse(userServicePort.getUserByEmail(email));
+    public UserPswResponseDto getUserByEmail(String email) {
+        return userPswResponseMapper.toResponse(userServicePort.getUserByEmail(email));
     }
 }

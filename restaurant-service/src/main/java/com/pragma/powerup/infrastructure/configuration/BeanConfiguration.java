@@ -1,5 +1,6 @@
 package com.pragma.powerup.infrastructure.configuration;
 
+import com.pragma.powerup.application.dto.response.UserResponseDto;
 import com.pragma.powerup.domain.api.IDishCategoryServicePort;
 import com.pragma.powerup.domain.api.IDishServicePort;
 import com.pragma.powerup.domain.api.IRestaurantServicePort;
@@ -19,9 +20,21 @@ import com.pragma.powerup.infrastructure.out.jpa.mapper.IRestaurantEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IDishCategoryRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IDishRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRestaurantRepository;
+import com.pragma.powerup.infrastructure.security.aut.DetailsUser;
+import com.pragma.powerup.infrastructure.security.aut.IDetailsUserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
 
 @Configuration
 @RequiredArgsConstructor
@@ -34,6 +47,7 @@ public class BeanConfiguration {
     private final IUserClientFeign userClientFeign;
     private final IDishRepository dishRepository;
     private final IDishEntityMapper dishEntityMapper;
+    private final IDetailsUserMapper detailsUserMapper;
 
     @Bean
     public IRestaurantPersistencePort restaurantPersistencePort(){
@@ -63,5 +77,44 @@ public class BeanConfiguration {
     @Bean
     public IDishServicePort dishServicePort(){
         return new DishUseCase(dishPersistencePort());
+    }
+
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+
+        return username -> optionalDetailsUser(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+    private Optional<DetailsUser> optionalDetailsUser(String username) {
+        UserResponseDto userResponseDto = userClientFeign.getUserByEmail(username);
+        userResponseDto = userClientFeign.getUserByEmail(username);
+
+        //Optional<UserEntity> userEntity = repository.findByEmail(username);
+        //if(userEntity.isEmpty()){
+        //throw new RuntimeException();
+        //}
+        //catch (Exception e){
+        //throw new RuntimeException();
+        //}
+        DetailsUser user = detailsUserMapper.toUser(userResponseDto);
+        user.setRole(userResponseDto.getRole().getName());
+        return Optional.of(user);
+    }
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(encoder());
+        return authProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 }
