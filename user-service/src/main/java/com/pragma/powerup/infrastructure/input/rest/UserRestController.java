@@ -1,6 +1,7 @@
 package com.pragma.powerup.infrastructure.input.rest;
 
 import com.pragma.powerup.application.dto.request.UserRequestDto;
+import com.pragma.powerup.application.dto.response.UserPswResponseDto;
 import com.pragma.powerup.application.dto.response.UserResponseDto;
 import com.pragma.powerup.application.service.IUserSpringService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -87,7 +88,7 @@ public class UserRestController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable("email") String email){
+    public ResponseEntity<UserPswResponseDto> getUserByEmail(@PathVariable("email") String email){
         return ResponseEntity.ok(userSpringService.getUserByEmail(email));
     }
 }

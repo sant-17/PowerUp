@@ -5,12 +5,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserResponseDto {
+public class UserPswResponseDto {
     private Long id;
     private String name;
     private String surname;
     private Long identificationNumber;
-    private String email;
+    private String phoneNumber;
     private String password;
+    private String email;
     private RoleResponseDto role;
 }
