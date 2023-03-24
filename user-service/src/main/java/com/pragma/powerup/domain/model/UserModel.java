@@ -10,6 +10,9 @@ public class UserModel {
     private String password;
     private RoleModel role;
 
+    public UserModel() {
+    }
+
     public UserModel(Long id, String name, String surname, Long identificationNumber, String phoneNumber, String email, String password, RoleModel role) {
         this.id = id;
         this.name = name;

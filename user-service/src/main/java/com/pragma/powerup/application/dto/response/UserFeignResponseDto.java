@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserPswResponseDto {
+public class UserFeignResponseDto {
     private Long id;
     private String name;
     private String surname;

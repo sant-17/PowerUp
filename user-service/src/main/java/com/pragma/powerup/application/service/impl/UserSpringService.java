@@ -1,14 +1,13 @@
 package com.pragma.powerup.application.service.impl;
 
 import com.pragma.powerup.application.dto.request.UserRequestDto;
-import com.pragma.powerup.application.dto.response.UserPswResponseDto;
+import com.pragma.powerup.application.dto.response.UserFeignResponseDto;
 import com.pragma.powerup.application.dto.response.UserResponseDto;
 import com.pragma.powerup.application.mapper.IUserPswResponseMapper;
 import com.pragma.powerup.application.mapper.IUserRequestMapper;
 import com.pragma.powerup.application.mapper.IUserResponseMapper;
 import com.pragma.powerup.application.service.IUserSpringService;
 import com.pragma.powerup.domain.api.IUserServicePort;
-import com.pragma.powerup.domain.model.UserModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,31 +27,19 @@ public class UserSpringService implements IUserSpringService {
     @Override
     public void saveUserAsOwner(UserRequestDto userRequestDto) {
         userRequestDto.setRole(2L);
-        UserModel userModel = userRequestMapper.toUser(userRequestDto);
-        if (!userModel.getPhoneNumber().substring(0,1).equals("+")){
-            userModel.setPhoneNumber("+".concat(userModel.getPhoneNumber()));
-        }
-        userServicePort.saveUserAsOwner(userModel);
+        userServicePort.saveUser(userRequestMapper.toUser(userRequestDto));
     }
 
     @Override
     public void saveUserAsEmployee(UserRequestDto userRequestDto) {
         userRequestDto.setRole(3L);
-        UserModel userModel = userRequestMapper.toUser(userRequestDto);
-        if (!userModel.getPhoneNumber().substring(0,1).equals("+")){
-            userModel.setPhoneNumber("+".concat(userModel.getPhoneNumber()));
-        }
-        userServicePort.saveUserAsEmployee(userModel);
+        userServicePort.saveUser(userRequestMapper.toUser(userRequestDto));
     }
 
     @Override
     public void saveUserAsClient(UserRequestDto userRequestDto) {
         userRequestDto.setRole(4L);
-        UserModel userModel = userRequestMapper.toUser(userRequestDto);
-        if (!userModel.getPhoneNumber().substring(0,1).equals("+")){
-            userModel.setPhoneNumber("+".concat(userModel.getPhoneNumber()));
-        }
-        userServicePort.saveUserAsEmployee(userModel);
+        userServicePort.saveUser(userRequestMapper.toUser(userRequestDto));
     }
 
     @Override
@@ -66,7 +53,7 @@ public class UserSpringService implements IUserSpringService {
     }
 
     @Override
-    public UserPswResponseDto getUserByEmail(String email) {
+    public UserFeignResponseDto getUserByEmail(String email) {
         return userPswResponseMapper.toResponse(userServicePort.getUserByEmail(email));
     }
 }

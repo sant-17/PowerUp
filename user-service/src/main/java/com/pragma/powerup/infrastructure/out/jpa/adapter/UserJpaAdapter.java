@@ -20,27 +20,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
     private final IUserEntityMapper userEntityMapper;
 
     @Override
-    public UserModel saveUserAsOwner(UserModel userModel) {
-        Boolean existsEmail = userRepository.selectExistsEmail(userModel.getEmail());
-        if (existsEmail){
-            throw new UserAlreadyExistsException(userModel.getEmail());
-        }
-        UserEntity userEntity = userRepository.save(userEntityMapper.toEntity(userModel));
-        return userEntityMapper.toUserModel(userEntity);
-    }
-
-    @Override
-    public UserModel saveUserAsEmployee(UserModel userModel) {
-        Boolean existsEmail = userRepository.selectExistsEmail(userModel.getEmail());
-        if (existsEmail){
-            throw new UserAlreadyExistsException(userModel.getEmail());
-        }
-        UserEntity userEntity = userRepository.save(userEntityMapper.toEntity(userModel));
-        return userEntityMapper.toUserModel(userEntity);
-    }
-
-    @Override
-    public UserModel saveUserAsClient(UserModel userModel) {
+    public UserModel saveUser(UserModel userModel) {
         Boolean existsEmail = userRepository.selectExistsEmail(userModel.getEmail());
         if (existsEmail){
             throw new UserAlreadyExistsException(userModel.getEmail());
@@ -70,7 +50,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
             return userEntityMapper.toUserModel(userRepository.findByEmail(email).get());
         }
         catch (NoSuchElementException ex){
-            throw new RuntimeException("User not found by requested email ".concat(email));
+            return new UserModel();
         }
     }
 }

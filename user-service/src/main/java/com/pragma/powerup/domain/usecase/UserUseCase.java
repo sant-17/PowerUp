@@ -17,21 +17,12 @@ public class UserUseCase implements IUserServicePort {
     }
 
     @Override
-    public void saveUserAsOwner(UserModel userModel) {
+    public void saveUser(UserModel userModel) {
         userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
-        userPersistencePort.saveUserAsOwner(userModel);
-    }
-
-    @Override
-    public void saveUserAsEmployee(UserModel userModel) {
-        userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
-        userPersistencePort.saveUserAsEmployee(userModel);
-    }
-
-    @Override
-    public void saverUserAsClient(UserModel userModel) {
-        userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
-        userPersistencePort.saveUserAsClient(userModel);
+        if (!userModel.getPhoneNumber().substring(0,1).equals("+")){
+            userModel.setPhoneNumber("+".concat(userModel.getPhoneNumber()));
+        }
+        userPersistencePort.saveUser(userModel);
     }
 
     @Override
