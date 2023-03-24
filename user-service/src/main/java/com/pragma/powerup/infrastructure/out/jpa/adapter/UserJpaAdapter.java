@@ -30,6 +30,26 @@ public class UserJpaAdapter implements IUserPersistencePort {
     }
 
     @Override
+    public UserModel saveUserAsEmployee(UserModel userModel) {
+        Boolean existsEmail = userRepository.selectExistsEmail(userModel.getEmail());
+        if (existsEmail){
+            throw new UserAlreadyExistsException(userModel.getEmail());
+        }
+        UserEntity userEntity = userRepository.save(userEntityMapper.toEntity(userModel));
+        return userEntityMapper.toUserModel(userEntity);
+    }
+
+    @Override
+    public UserModel saveUserAsClient(UserModel userModel) {
+        Boolean existsEmail = userRepository.selectExistsEmail(userModel.getEmail());
+        if (existsEmail){
+            throw new UserAlreadyExistsException(userModel.getEmail());
+        }
+        UserEntity userEntity = userRepository.save(userEntityMapper.toEntity(userModel));
+        return userEntityMapper.toUserModel(userEntity);
+    }
+
+    @Override
     public List<UserModel> getAllUsers() {
         List<UserEntity> entityList = userRepository.findAll();
         if (entityList.isEmpty()){

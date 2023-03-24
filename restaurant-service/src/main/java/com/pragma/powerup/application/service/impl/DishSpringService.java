@@ -1,9 +1,11 @@
 package com.pragma.powerup.application.service.impl;
 
 import com.pragma.powerup.application.dto.request.DishRequestDto;
+import com.pragma.powerup.application.dto.request.DishUpdateRequestDto;
 import com.pragma.powerup.application.dto.response.DishResponseDto;
 import com.pragma.powerup.application.mapper.IDishRequestMapper;
 import com.pragma.powerup.application.mapper.IDishResponseMapper;
+import com.pragma.powerup.application.mapper.IDishUpdateRequestMapper;
 import com.pragma.powerup.application.service.IDishSpringService;
 import com.pragma.powerup.domain.api.IDishServicePort;
 import com.pragma.powerup.domain.model.DishModel;
@@ -19,6 +21,7 @@ import java.util.List;
 public class DishSpringService implements IDishSpringService {
     private final IDishServicePort dishServicePort;
     private final IDishRequestMapper dishRequestMapper;
+    private final IDishUpdateRequestMapper dishUpdateRequestMapper;
     private final IDishResponseMapper dishResponseMapper;
 
     @Override
@@ -39,8 +42,19 @@ public class DishSpringService implements IDishSpringService {
     }
 
     @Override
-    public void updateDishById(Long id, DishRequestDto dishRequestDto) {
-        DishModel dishModel = dishRequestMapper.toDish(dishRequestDto);
+    public void updateDishById(Long id, DishUpdateRequestDto dishUpdateRequestDto) {
+        DishModel dishModel = dishUpdateRequestMapper.toDish(dishUpdateRequestDto);
         dishServicePort.updateDishById(id, dishModel);
+    }
+
+    @Override
+    public void setDishActive(Long id, DishUpdateRequestDto dishUpdateRequestDto) {
+        DishModel dishModel = dishUpdateRequestMapper.toDish(dishUpdateRequestDto);
+        dishServicePort.setDishActive(id, dishModel);
+    }
+
+    @Override
+    public List<DishResponseDto> getAllDishesPaging(Long restaurant, Integer pageNumber, Integer pageSize) {
+        return dishResponseMapper.toResponseList(dishServicePort.getAllDishesPaging(restaurant, pageNumber, pageSize));
     }
 }

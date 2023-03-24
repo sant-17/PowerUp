@@ -9,4 +9,5 @@ public interface IRestaurantServicePort {
     void saveRestaurant(RestaurantModel restaurantModel);
     List<RestaurantModel> getAllRestaurants();
     RestaurantModel getRestaurantById(Long id);
+    List<RestaurantModel> getAllRestaurantsPaging(Integer pageNumber, Integer pageSize);
 }

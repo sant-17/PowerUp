@@ -23,6 +23,18 @@ public class UserUseCase implements IUserServicePort {
     }
 
     @Override
+    public void saveUserAsEmployee(UserModel userModel) {
+        userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
+        userPersistencePort.saveUserAsEmployee(userModel);
+    }
+
+    @Override
+    public void saverUserAsClient(UserModel userModel) {
+        userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
+        userPersistencePort.saveUserAsClient(userModel);
+    }
+
+    @Override
     public List<UserModel> getAllUsers() {
         return userPersistencePort.getAllUsers();
     }

@@ -34,5 +34,15 @@ public class DishUseCase implements IDishServicePort {
         dishPersistencePort.updateDishById(id, dishModel);
     }
 
+    @Override
+    public void setDishActive(Long id, DishModel dishModel) {
+        dishPersistencePort.setDishActive(id, dishModel);
+    }
+
+    @Override
+    public List<DishModel> getAllDishesPaging(Long restaurant, Integer pageNumber, Integer pageSize) {
+        return dishPersistencePort.getAllDishesPaging(restaurant, pageNumber, pageSize);
+    }
+
 
 }

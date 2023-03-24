@@ -36,9 +36,21 @@ public class UserRestController {
                     description = "Bad request. Field missing",
                     content = @Content)
     })
-    @PostMapping("/")
-    public ResponseEntity<Void> saveUser(@Valid @RequestBody UserRequestDto userRequestDto){
+    @PostMapping("/save-owner")
+    public ResponseEntity<Void> saveUserAsOwner(@Valid @RequestBody UserRequestDto userRequestDto){
         userSpringService.saveUserAsOwner(userRequestDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/save-employee")
+    public ResponseEntity<Void> saveUserAsEmployee(@Valid @RequestBody UserRequestDto userRequestDto){
+        userSpringService.saveUserAsEmployee(userRequestDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/save-client")
+    public ResponseEntity<Void> saveUserAsClient(@Valid @RequestBody UserRequestDto userRequestDto){
+        userSpringService.saveUserAsClient(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

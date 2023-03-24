@@ -37,21 +37,11 @@ public class AuthenticationService {
     }
 
     private Optional<DetailsUser> optionalDetailsUser(String username) {
-        UserResponseDto userResponseDto;
-        userResponseDto = userClientFeign.getUserByEmail(username);
-
-        //Optional<UserEntity> userEntity = repository.findByEmail(username);
-        //if(userEntity.isEmpty()){
-            //throw new RuntimeException();
-        //}
-        //catch (Exception e){
-            //throw new RuntimeException();
-        //}
+        UserResponseDto userResponseDto = userClientFeign.getUserByEmail(username);
         DetailsUser user = userDetailsMapper.toUser(userResponseDto);
         user.setRole(userResponseDto.getRole().getName());
         return Optional.of(user);
     }
-
 
     public UserAuthDto getUserAuth(String email) {
         UserResponseDto userResponseDto;

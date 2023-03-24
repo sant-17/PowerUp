@@ -36,6 +36,26 @@ public class UserSpringService implements IUserSpringService {
     }
 
     @Override
+    public void saveUserAsEmployee(UserRequestDto userRequestDto) {
+        userRequestDto.setRole(3L);
+        UserModel userModel = userRequestMapper.toUser(userRequestDto);
+        if (!userModel.getPhoneNumber().substring(0,1).equals("+")){
+            userModel.setPhoneNumber("+".concat(userModel.getPhoneNumber()));
+        }
+        userServicePort.saveUserAsEmployee(userModel);
+    }
+
+    @Override
+    public void saveUserAsClient(UserRequestDto userRequestDto) {
+        userRequestDto.setRole(4L);
+        UserModel userModel = userRequestMapper.toUser(userRequestDto);
+        if (!userModel.getPhoneNumber().substring(0,1).equals("+")){
+            userModel.setPhoneNumber("+".concat(userModel.getPhoneNumber()));
+        }
+        userServicePort.saveUserAsEmployee(userModel);
+    }
+
+    @Override
     public List<UserResponseDto> getAllUsers() {
         return userResponseMapper.toResponseList(userServicePort.getAllUsers());
     }

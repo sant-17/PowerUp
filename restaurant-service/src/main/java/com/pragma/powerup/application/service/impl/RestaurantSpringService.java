@@ -39,4 +39,10 @@ public class RestaurantSpringService implements IRestaurantSpringService {
     public RestaurantResponseDto getRestaurantById(Long id) {
         return restaurantResponseMapper.toResponse(restaurantServicePort.getRestaurantById(id));
     }
+
+    @Override
+    public List<RestaurantResponseDto> getAllRestaurantsPaging(Integer pageNumber, Integer pageSize) {
+        return restaurantResponseMapper
+                .toResponseList(restaurantServicePort.getAllRestaurantsPaging(pageNumber, pageSize));
+    }
 }

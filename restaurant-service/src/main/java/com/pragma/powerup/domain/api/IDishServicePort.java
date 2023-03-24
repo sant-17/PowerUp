@@ -9,4 +9,6 @@ public interface IDishServicePort {
     List<DishModel> getAllDishes();
     DishModel getDishById(Long id);
     void updateDishById(Long id, DishModel dishModel);
+    void setDishActive(Long id, DishModel dishModel);
+    List<DishModel> getAllDishesPaging(Long restaurant, Integer pageNumber, Integer pageSize);
 }

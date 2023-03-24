@@ -8,4 +8,5 @@ public interface IRestaurantPersistencePort {
     RestaurantModel saveRestaurant(RestaurantModel restaurantModel);
     List<RestaurantModel> getAllRestaurants();
     RestaurantModel getRestaurantById(Long id);
+    List<RestaurantModel> getAllRestaurantsPaging(Integer pageNumber, Integer pageSize);
 }

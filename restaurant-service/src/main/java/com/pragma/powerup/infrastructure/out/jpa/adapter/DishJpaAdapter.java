@@ -8,8 +8,12 @@ import com.pragma.powerup.infrastructure.out.jpa.entity.DishEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IDishEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IDishRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class DishJpaAdapter implements IDishPersistencePort {
@@ -51,5 +55,28 @@ public class DishJpaAdapter implements IDishPersistencePort {
         }
         DishEntity dishEntity = dishRepository.save(dishEntityMapper.toEntity(dishModelNew));
         return dishEntityMapper.toDishModel(dishEntity);
+    }
+
+    @Override
+    public DishModel setDishActive(Long id, DishModel dishModel) {
+        DishModel dishModelNew = dishEntityMapper.toDishModel(dishRepository.findById(id)
+                .orElseThrow(NoDishFoundException::new));
+        if (dishModel.getActive() != null){
+            dishModelNew.setActive(dishModel.getActive());
+        }
+        DishEntity dishEntity = dishRepository.save(dishEntityMapper.toEntity(dishModelNew));
+        return dishEntityMapper.toDishModel(dishEntity);
+    }
+
+    @Override
+    public List<DishModel> getAllDishesPaging(Long restaurant, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by( "category"));
+
+        return dishRepository.findAllByRestaurantId(restaurant, pageable)
+                .stream()
+                .map(dishEntityMapper::toDishModel)
+                .collect(Collectors.toList());
+        //return dishEntityMapper.toDishModelList(
+        //        dishRepository.findDishesByRestaurantId(restaurant, pageable)
     }
 }
