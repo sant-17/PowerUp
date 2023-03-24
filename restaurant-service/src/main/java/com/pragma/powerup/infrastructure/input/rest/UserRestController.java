@@ -1,8 +1,7 @@
 package com.pragma.powerup.infrastructure.input.rest;
 
-import com.pragma.powerup.application.dto.request.UserRequestDto;
-import com.pragma.powerup.application.dto.response.UserResponseDto;
-import com.pragma.powerup.infrastructure.client.IUserClientFeign;
+import com.pragma.powerup.infrastructure.feign.dto.request.UserRequestDto;
+import com.pragma.powerup.infrastructure.feign.service.IFeignClientSpringService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,29 +17,17 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class UserRestController {
 
-    private final IUserClientFeign userClientFeign;
+    private final IFeignClientSpringService feignClientSpringService;
 
     @PostMapping("/create-owner")
     public ResponseEntity<Void> saveUserAsOwner(@Valid @RequestBody UserRequestDto userRequestDto){
-        try{
-            UserResponseDto userResponseDto = userClientFeign.getUserByEmail(userRequestDto.getEmail());
-        }
-        catch (Exception e){
-            userClientFeign.saveUserAsOwner(userRequestDto);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        feignClientSpringService.createOwner(userRequestDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/create-client")
     public ResponseEntity<Void> saveUserAsClient(@Valid @RequestBody UserRequestDto userRequestDto){
-        try{
-            UserResponseDto userResponseDto = userClientFeign.getUserByEmail(userRequestDto.getEmail());
-        }
-        catch (Exception e){
-            userClientFeign.saveUserAsOwner(userRequestDto);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        feignClientSpringService.createClient(userRequestDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

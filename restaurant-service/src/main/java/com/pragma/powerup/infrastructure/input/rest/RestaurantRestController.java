@@ -18,8 +18,7 @@ public class RestaurantRestController {
     private final IRestaurantSpringService restaurantSpringService;
 
     @PostMapping("/create")
-    public ResponseEntity<Void> saveRestaurant(
-            @Valid @RequestBody RestaurantRequestDto restaurantRequestDto){
+    public ResponseEntity<Void> saveRestaurant(@Valid @RequestBody RestaurantRequestDto restaurantRequestDto){
 
         restaurantSpringService.saveRestaurant(restaurantRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -27,22 +26,16 @@ public class RestaurantRestController {
 
     @GetMapping("/")
     public ResponseEntity<List<RestaurantResponseDto>> getAllRestaurants(){
-
         return ResponseEntity.ok(restaurantSpringService.getAllRestaurants());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RestaurantResponseDto> getRestaurantById(
-            @PathVariable("id") Long id){
-
+    public ResponseEntity<RestaurantResponseDto> getRestaurantById(@PathVariable("id") Long id){
         return ResponseEntity.ok(restaurantSpringService.getRestaurantById(id));
     }
 
     @GetMapping("/all/{size}/{number}")
-    public ResponseEntity<List<RestaurantResponseDto>> getAllRestaurants(
-            @PathVariable("number") Integer number,
-            @PathVariable("size") Integer size){
-
+    public ResponseEntity<List<RestaurantResponseDto>> getAllRestaurants(@PathVariable("number") Integer number, @PathVariable("size") Integer size){
         return ResponseEntity.ok(restaurantSpringService.getAllRestaurantsPaging(number, size));
     }
 }

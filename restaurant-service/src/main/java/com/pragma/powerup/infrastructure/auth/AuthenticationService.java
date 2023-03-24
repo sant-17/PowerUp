@@ -1,7 +1,7 @@
 package com.pragma.powerup.infrastructure.auth;
 
 import com.pragma.powerup.application.dto.response.UserResponseDto;
-import com.pragma.powerup.infrastructure.client.IUserClientFeign;
+import com.pragma.powerup.infrastructure.feign.IUserClientFeign;
 import com.pragma.powerup.infrastructure.security.JwtService;
 import com.pragma.powerup.infrastructure.security.aut.DetailsUser;
 import com.pragma.powerup.infrastructure.security.aut.IDetailsUserMapper;

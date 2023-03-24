@@ -3,7 +3,7 @@ package com.pragma.powerup.infrastructure.out.jpa.adapter;
 import com.pragma.powerup.application.dto.response.UserResponseDto;
 import com.pragma.powerup.domain.model.RestaurantModel;
 import com.pragma.powerup.domain.spi.IRestaurantPersistencePort;
-import com.pragma.powerup.infrastructure.client.IUserClientFeign;
+import com.pragma.powerup.infrastructure.feign.IUserClientFeign;
 import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
 import com.pragma.powerup.infrastructure.exception.NoRestaurantFoundException;
 import com.pragma.powerup.infrastructure.exception.NoUserFoundException;

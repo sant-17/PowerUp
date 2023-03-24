@@ -13,7 +13,7 @@ import com.pragma.powerup.domain.usecase.DishCategoryUseCase;
 import com.pragma.powerup.domain.usecase.DishUseCase;
 import com.pragma.powerup.domain.usecase.RestaurantEmpUseCase;
 import com.pragma.powerup.domain.usecase.RestaurantUseCase;
-import com.pragma.powerup.infrastructure.client.IUserClientFeign;
+import com.pragma.powerup.infrastructure.feign.IUserClientFeign;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.DishCategoryJpaAdapter;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.DishJpaAdapter;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.RestaurantEmpJpaAdapter;

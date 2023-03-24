@@ -1,6 +1,5 @@
 package com.pragma.powerup.application.service.impl;
 
-import com.pragma.powerup.application.dto.request.EmployeeRequestDto;
 import com.pragma.powerup.application.dto.request.RestaurantEmpRequestDto;
 import com.pragma.powerup.application.mapper.IRestaurantEmpRequestMapper;
 import com.pragma.powerup.application.service.IRestaurantEmpSpringService;
