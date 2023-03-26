@@ -3,11 +3,11 @@ package com.pragma.powerup.infrastructure.out.jpa.adapter;
 import com.pragma.powerup.application.dto.response.UserResponseDto;
 import com.pragma.powerup.domain.model.RestaurantModel;
 import com.pragma.powerup.domain.spi.IRestaurantPersistencePort;
-import com.pragma.powerup.infrastructure.feign.IUserClientFeign;
+import com.pragma.powerup.infrastructure.exception.NonOwnerUserException;
 import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
 import com.pragma.powerup.infrastructure.exception.NoRestaurantFoundException;
 import com.pragma.powerup.infrastructure.exception.NoUserFoundException;
-import com.pragma.powerup.infrastructure.exception.NonAdminUserException;
+import com.pragma.powerup.infrastructure.feign.service.IFeignClientSpringService;
 import com.pragma.powerup.infrastructure.out.jpa.entity.RestaurantEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IRestaurantEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRestaurantRepository;
@@ -15,28 +15,30 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 @RequiredArgsConstructor
 public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
 
     private final IRestaurantRepository restaurantRepository;
     private final IRestaurantEntityMapper restaurantEntityMapper;
-    private final IUserClientFeign userClientFeign;
+    private final IFeignClientSpringService feignClientSpringService;
 
     @Override
     public RestaurantModel saveRestaurant(RestaurantModel restaurantModel) {
-        UserResponseDto userResponseDto;
-        try{
-            userResponseDto = userClientFeign.getUserById(restaurantModel.getOwner());
-        } catch (Exception ex){
+        UserResponseDto userResponseDto = feignClientSpringService.getUserById(restaurantModel.getOwner());
+
+        if (userResponseDto.getEmail() == null){
             throw new NoUserFoundException();
         }
         if (!userResponseDto.getRole().getName().equals("PROPIETARIO")){
-            throw new NonAdminUserException();
+            throw new NonOwnerUserException();
         }
+
         RestaurantEntity restaurantEntity = restaurantRepository.save(restaurantEntityMapper.toEntity(restaurantModel));
         return restaurantEntityMapper.toRestaurantModel(restaurantEntity);
     }

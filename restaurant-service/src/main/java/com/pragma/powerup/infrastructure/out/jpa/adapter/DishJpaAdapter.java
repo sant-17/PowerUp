@@ -1,9 +1,13 @@
 package com.pragma.powerup.infrastructure.out.jpa.adapter;
 
+import com.pragma.powerup.application.dto.response.UserResponseDto;
 import com.pragma.powerup.domain.model.DishModel;
+import com.pragma.powerup.domain.model.RestaurantModel;
 import com.pragma.powerup.domain.spi.IDishPersistencePort;
 import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
 import com.pragma.powerup.infrastructure.exception.NoDishFoundException;
+import com.pragma.powerup.infrastructure.exception.UsersDoNotMatchException;
+import com.pragma.powerup.infrastructure.feign.service.IFeignClientSpringService;
 import com.pragma.powerup.infrastructure.out.jpa.entity.DishEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IDishEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IDishRepository;
@@ -11,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,10 +26,19 @@ public class DishJpaAdapter implements IDishPersistencePort {
 
     private final IDishRepository dishRepository;
     private final IDishEntityMapper dishEntityMapper;
+    private final IFeignClientSpringService feignClientSpringService;
+    private final RestaurantJpaAdapter restaurantJpaAdapter;
 
 
     @Override
     public DishModel saveDish(DishModel dishModel) {
+        String username = usernameToken();
+        RestaurantModel restaurantModel = restaurantJpaAdapter.getRestaurantById(dishModel.getRestaurant().getId());
+        UserResponseDto userResponseDto = feignClientSpringService.getUserById(restaurantModel.getOwner());
+
+        if (!username.equals(userResponseDto.getEmail())){
+            throw new UsersDoNotMatchException();
+        }
         DishEntity dishEntity = dishRepository.save(dishEntityMapper.toEntity(dishModel));
         return dishEntityMapper.toDishModel(dishEntity);
     }
@@ -45,8 +60,17 @@ public class DishJpaAdapter implements IDishPersistencePort {
 
     @Override
     public DishModel updateDishById(Long id, DishModel dishModel) {
+        String username = usernameToken();
+        RestaurantModel restaurantModel = restaurantJpaAdapter.getRestaurantById(id);
+        UserResponseDto userResponseDto = feignClientSpringService.getUserById(restaurantModel.getOwner());
+
+        if (!username.equals(userResponseDto.getEmail())){
+            throw new UsersDoNotMatchException();
+        }
+
         DishModel dishModelNew = dishEntityMapper.toDishModel(dishRepository.findById(id)
                 .orElseThrow(NoDishFoundException::new));
+
         if (dishModel.getPrice() != null){
             dishModelNew.setPrice(dishModel.getPrice());
         }
@@ -59,6 +83,14 @@ public class DishJpaAdapter implements IDishPersistencePort {
 
     @Override
     public DishModel setDishActive(Long id, DishModel dishModel) {
+        String username = usernameToken();
+        RestaurantModel restaurantModel = restaurantJpaAdapter.getRestaurantById(id);
+        UserResponseDto userResponseDto = feignClientSpringService.getUserById(restaurantModel.getOwner());
+
+        if (!username.equals(userResponseDto.getEmail())){
+            throw new UsersDoNotMatchException();
+        }
+
         DishModel dishModelNew = dishEntityMapper.toDishModel(dishRepository.findById(id)
                 .orElseThrow(NoDishFoundException::new));
         if (dishModel.getActive() != null){
@@ -78,5 +110,14 @@ public class DishJpaAdapter implements IDishPersistencePort {
                 .collect(Collectors.toList());
         //return dishEntityMapper.toDishModelList(
         //        dishRepository.findDishesByRestaurantId(restaurant, pageable)
+    }
+
+    public static String usernameToken(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = null;
+        if (principal instanceof UserDetails){
+            userDetails = (UserDetails) principal;
+        }
+        return userDetails.getUsername();
     }
 }

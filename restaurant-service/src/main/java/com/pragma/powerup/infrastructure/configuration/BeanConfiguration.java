@@ -13,7 +13,7 @@ import com.pragma.powerup.domain.usecase.DishCategoryUseCase;
 import com.pragma.powerup.domain.usecase.DishUseCase;
 import com.pragma.powerup.domain.usecase.RestaurantEmpUseCase;
 import com.pragma.powerup.domain.usecase.RestaurantUseCase;
-import com.pragma.powerup.infrastructure.feign.IUserClientFeign;
+import com.pragma.powerup.infrastructure.feign.service.IFeignClientSpringService;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.DishCategoryJpaAdapter;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.DishJpaAdapter;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.RestaurantEmpJpaAdapter;
@@ -54,13 +54,13 @@ public class BeanConfiguration {
     private final IDishEntityMapper dishEntityMapper;
     private final IRestaurantEmpRepository restaurantEmpRepository;
     private final IRestaurantEmpEntityMapper restaurantEmpEntityMapper;
-    private final IUserClientFeign userClientFeign;
-
+    private final IFeignClientSpringService feignClientSpringService;
     private final IDetailsUserMapper detailsUserMapper;
+    private final RestaurantJpaAdapter restaurantJpaAdapter;
 
     @Bean
     public IRestaurantPersistencePort restaurantPersistencePort(){
-        return new RestaurantJpaAdapter(restaurantRepository, restaurantEntityMapper, userClientFeign);
+        return new RestaurantJpaAdapter(restaurantRepository, restaurantEntityMapper, feignClientSpringService);
     }
 
     @Bean
@@ -78,7 +78,7 @@ public class BeanConfiguration {
     }
     @Bean
     IDishPersistencePort dishPersistencePort(){
-        return new DishJpaAdapter(dishRepository, dishEntityMapper);
+        return new DishJpaAdapter(dishRepository, dishEntityMapper, feignClientSpringService, restaurantJpaAdapter);
     }
 
     @Bean
@@ -88,7 +88,7 @@ public class BeanConfiguration {
 
     @Bean
     IRestaurantEmpPersistencePort restaurantEmpPersistencePort(){
-        return new RestaurantEmpJpaAdapter(restaurantEmpRepository, restaurantEmpEntityMapper);
+        return new RestaurantEmpJpaAdapter(restaurantEmpRepository, restaurantEmpEntityMapper, feignClientSpringService, restaurantJpaAdapter);
     }
 
     @Bean
@@ -108,16 +108,10 @@ public class BeanConfiguration {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
     private Optional<DetailsUser> optionalDetailsUser(String username) {
-        UserResponseDto userResponseDto = userClientFeign.getUserByEmail(username);
-        userResponseDto = userClientFeign.getUserByEmail(username);
-
-        //Optional<UserEntity> userEntity = repository.findByEmail(username);
-        //if(userEntity.isEmpty()){
-        //throw new RuntimeException();
-        //}
-        //catch (Exception e){
-        //throw new RuntimeException();
-        //}
+        UserResponseDto userResponseDto = feignClientSpringService.getUserByEmail(username);
+        if (userResponseDto.getId() == null){
+            throw new RuntimeException("???");
+        }
         DetailsUser user = detailsUserMapper.toUser(userResponseDto);
         user.setRole(userResponseDto.getRole().getName());
         return Optional.of(user);

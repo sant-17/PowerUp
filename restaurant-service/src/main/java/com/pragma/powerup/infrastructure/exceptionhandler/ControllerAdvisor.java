@@ -54,6 +54,13 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NON_ADMIN_USER.getMessage()));
     }
 
+    @ExceptionHandler(NonOwnerUserException.class)
+    public ResponseEntity<Map<String, String>> handleNonUserOwnerException(
+            NonAdminUserException ignoredNonUserOwnerException){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NON_OWNER_USER.getMessage()));
+    }
+
     @ExceptionHandler(NoUserFoundException.class)
     public ResponseEntity<Map<String, String>> handleNoUserFoundException(
             NoUserFoundException ignoredNoUserFoundException){
@@ -74,6 +81,14 @@ public class ControllerAdvisor {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_ALREADY_EXISTS.getMessage().concat(ignoredUserAlreadyExistsException.getParam())));
     }
+
+    @ExceptionHandler(UsersDoNotMatchException.class)
+    public ResponseEntity<Map<String, String>> handleUsersDoNotMatchException(
+            UsersDoNotMatchException ignoredUsersDoNotMatchException){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.USERS_DONT_MATCH.getMessage()));
+    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException ex){

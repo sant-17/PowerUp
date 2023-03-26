@@ -1,7 +1,7 @@
 package com.pragma.powerup.infrastructure.auth;
 
 import com.pragma.powerup.application.dto.response.UserResponseDto;
-import com.pragma.powerup.infrastructure.feign.IUserClientFeign;
+import com.pragma.powerup.infrastructure.feign.service.IFeignClientSpringService;
 import com.pragma.powerup.infrastructure.security.JwtService;
 import com.pragma.powerup.infrastructure.security.aut.DetailsUser;
 import com.pragma.powerup.infrastructure.security.aut.IDetailsUserMapper;
@@ -18,7 +18,7 @@ public class AuthenticationService {
     private final IDetailsUserMapper userDetailsMapper;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final IUserClientFeign userClientFeign;
+    private final IFeignClientSpringService feignClientSpringService;
 
 
     public AuthenticationResponse  authenticate(AuthenticationRequest request) {
@@ -29,31 +29,24 @@ public class AuthenticationService {
                 )
         );
         var user = optionalDetailsUser(request.getEmail()).get();
-
         var jwtToken = jwtService.generateToken(user, user.getRole());
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }
 
     private Optional<DetailsUser> optionalDetailsUser(String username) {
-        UserResponseDto userResponseDto = userClientFeign.getUserByEmail(username);
+        UserResponseDto userResponseDto = feignClientSpringService.getUserByEmail(username);
         DetailsUser user = userDetailsMapper.toUser(userResponseDto);
         user.setRole(userResponseDto.getRole().getName());
         return Optional.of(user);
     }
 
     public UserAuthDto getUserAuth(String email) {
-        UserResponseDto userResponseDto;
-        try{
-            userResponseDto = userClientFeign.getUserByEmail(email);
-        }
-        catch (Exception e){
-            throw new RuntimeException();
-        }
+        UserResponseDto userResponseDto = feignClientSpringService.getUserByEmail(email);
         DetailsUser user = userDetailsMapper.toUser(userResponseDto);
         user.setRole(userResponseDto.getRole().getName());
-
         return userDetailsMapper.toUserAuth(user);
     }
 }
