@@ -1,0 +1,9 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: twilio-service
+
+appDescription: "Pragma Powerup"
+appVersion: "1.0.0"
