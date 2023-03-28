@@ -15,10 +15,7 @@ import javax.persistence.*;
 @Setter
 public class RestaurantEmpEntity {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long id;
-
     @Column(name = "id_usuario")
     private Long user;
 

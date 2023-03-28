@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -24,6 +25,7 @@ public class Security {
                 .disable()
                 .authorizeHttpRequests()
 
+                .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/api/v1/auth/**").permitAll()
                 .antMatchers("/api/v1/user/create-client").permitAll()
                 .antMatchers("/api/v1/restaurant/all/**").permitAll()
@@ -31,6 +33,9 @@ public class Security {
                 .antMatchers("/api/v1/dish/all/**").permitAll()
                 .antMatchers("/api/v1/user/create-owner").hasAuthority("ADMINISTRADOR")
                 .antMatchers("/api/v1/restaurant/create").hasAuthority("ADMINISTRADOR")
+                .antMatchers("/api/v1/order/").hasAuthority("CLIENTE")
+                .antMatchers("/api/v1/order/get/**").hasAuthority("EMPLEADO")
+                .antMatchers("/api/v1/order/set-chef/").hasAuthority("EMPLEADO")
 
 
                 .anyRequest()
@@ -43,8 +48,15 @@ public class Security {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
 
+
         return http.build();
     }
 
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web
+                .ignoring()
+                .antMatchers("/swagger-ui/**");
+    }
 
 }

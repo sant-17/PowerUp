@@ -1,22 +1,12 @@
 package com.pragma.powerup.domain.model;
 
 public class RestaurantEmpModel {
-    private Long id;
     private Long user;
     private Long restaurant;
 
-    public RestaurantEmpModel(Long id, Long user, Long restaurant) {
-        this.id = id;
+    public RestaurantEmpModel(Long user, Long restaurant) {
         this.user = user;
         this.restaurant = restaurant;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getUser() {

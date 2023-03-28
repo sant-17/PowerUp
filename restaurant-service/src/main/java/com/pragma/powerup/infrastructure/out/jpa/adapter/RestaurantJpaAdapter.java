@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
+public class     RestaurantJpaAdapter implements IRestaurantPersistencePort {
 
     private final IRestaurantRepository restaurantRepository;
     private final IRestaurantEntityMapper restaurantEntityMapper;

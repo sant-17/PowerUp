@@ -9,6 +9,8 @@ public enum ExceptionResponse {
     NO_USER_FOUND("No User found for the requested ID (owner)"),
     USER_ALREADY_EXISTS("User already exits with requested email = "),
     USERS_DONT_MATCH("Requested user don't match with JWT username"),
+    USER_CANT_ORDER("The current user has some unfinished order"),
+    NO_ORDER_FOUND("No order found for requested id"),
     NO_DISH_FOUND("No dish found for the requested ID");
 
     private final String message;

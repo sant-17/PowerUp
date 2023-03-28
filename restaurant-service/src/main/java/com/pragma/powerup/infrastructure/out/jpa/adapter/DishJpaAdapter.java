@@ -108,8 +108,6 @@ public class DishJpaAdapter implements IDishPersistencePort {
                 .stream()
                 .map(dishEntityMapper::toDishModel)
                 .collect(Collectors.toList());
-        //return dishEntityMapper.toDishModelList(
-        //        dishRepository.findDishesByRestaurantId(restaurant, pageable)
     }
 
     public static String usernameToken(){

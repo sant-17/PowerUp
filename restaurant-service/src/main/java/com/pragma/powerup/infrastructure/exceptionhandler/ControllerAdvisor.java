@@ -89,6 +89,20 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.USERS_DONT_MATCH.getMessage()));
     }
 
+    @ExceptionHandler(UserCantOrderException.class)
+    public ResponseEntity<Map<String, String>> handleUserCantOrderException(
+            UserCantOrderException ignoredUserCantOrderException){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_CANT_ORDER.getMessage()));
+    }
+
+    @ExceptionHandler(NoOrderFoundException.class)
+    public ResponseEntity<Map<String, String>> handleNoOrderFoundException(
+            NoOrderFoundException ignoredNoOrderFoundException){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NO_ORDER_FOUND.getMessage()));
+    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException ex){
