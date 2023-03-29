@@ -29,4 +29,19 @@ public class OrderUseCase implements IOrderServicePort {
     public void setChef(Long id, OrderModel orderModel) {
         orderPersistencePort.setChef(id, orderModel);
     }
+
+    @Override
+    public void setOrderStatusReady(Long id) {
+        orderPersistencePort.setOrderStatusReady(id);
+    }
+
+    @Override
+    public void setOrderStatusDelivered(Long id) {
+        orderPersistencePort.setOrderStatusDelivered(id);
+    }
+
+    @Override
+    public void cancelOrder(Long id) {
+        orderPersistencePort.cancelOrder(id);
+    }
 }

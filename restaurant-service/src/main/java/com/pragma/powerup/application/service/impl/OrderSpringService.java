@@ -47,4 +47,19 @@ public class OrderSpringService implements IOrderSpringService {
         orderServicePort.setChef(id, orderModel);
 
     }
+
+    @Override
+    public void setOrderStatusReady(Long id) {
+        orderServicePort.setOrderStatusReady(id);
+    }
+
+    @Override
+    public void setOrderStatusDelivered(Long id) {
+        orderServicePort.setOrderStatusDelivered(id);
+    }
+
+    @Override
+    public void cancelOrder(Long id) {
+        orderServicePort.cancelOrder(id);
+    }
 }

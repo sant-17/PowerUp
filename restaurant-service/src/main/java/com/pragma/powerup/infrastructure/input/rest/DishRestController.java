@@ -48,7 +48,7 @@ public class DishRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/all/{restaurant}/{size}/{number}")
+    @GetMapping("/restaurant/{restaurant}/size/{size}/number/{number}")
     public ResponseEntity<List<DishResponseDto>> getAllDishesPaging(
             @PathVariable("restaurant") Long restaurant,
             @PathVariable("number") Integer pageNumber,

@@ -1,11 +1,11 @@
 package com.pragma.powerup.infrastructure.out.jpa.adapter;
 
-import com.pragma.powerup.application.dto.response.UserResponseDto;
+import com.pragma.powerup.infrastructure.feign.user.dto.response.UserResponseDto;
 import com.pragma.powerup.domain.model.RestaurantEmpModel;
 import com.pragma.powerup.domain.model.RestaurantModel;
 import com.pragma.powerup.domain.spi.IRestaurantEmpPersistencePort;
 import com.pragma.powerup.infrastructure.exception.UsersDoNotMatchException;
-import com.pragma.powerup.infrastructure.feign.service.IFeignClientSpringService;
+import com.pragma.powerup.infrastructure.feign.user.service.IUserFeignClientService;
 import com.pragma.powerup.infrastructure.out.jpa.entity.RestaurantEmpEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IRestaurantEmpEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRestaurantEmpRepository;
@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class RestaurantEmpJpaAdapter implements IRestaurantEmpPersistencePort {
     private final IRestaurantEmpRepository restaurantEmpRepository;
     private final IRestaurantEmpEntityMapper restaurantEmpEntityMapper;
-    private final IFeignClientSpringService feignClientSpringService;
+    private final IUserFeignClientService feignClientSpringService;
     private final RestaurantJpaAdapter restaurantJpaAdapter;
 
     @Override

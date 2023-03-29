@@ -1,6 +1,7 @@
 package com.pragma.powerup.infrastructure.configuration;
 
-import com.pragma.powerup.application.dto.response.UserResponseDto;
+import com.pragma.powerup.infrastructure.feign.twilio.service.ITwilioFeignClientService;
+import com.pragma.powerup.infrastructure.feign.user.dto.response.UserResponseDto;
 import com.pragma.powerup.domain.api.IDishCategoryServicePort;
 import com.pragma.powerup.domain.api.IDishServicePort;
 import com.pragma.powerup.domain.api.IOrderServicePort;
@@ -16,7 +17,7 @@ import com.pragma.powerup.domain.usecase.DishUseCase;
 import com.pragma.powerup.domain.usecase.OrderUseCase;
 import com.pragma.powerup.domain.usecase.RestaurantEmpUseCase;
 import com.pragma.powerup.domain.usecase.RestaurantUseCase;
-import com.pragma.powerup.infrastructure.feign.service.IFeignClientSpringService;
+import com.pragma.powerup.infrastructure.feign.user.service.IUserFeignClientService;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.DishCategoryJpaAdapter;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.DishJpaAdapter;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.OrderJpaAdapter;
@@ -61,12 +62,13 @@ public class BeanConfiguration {
     private final IDishEntityMapper dishEntityMapper;
     private final IRestaurantEmpRepository restaurantEmpRepository;
     private final IRestaurantEmpEntityMapper restaurantEmpEntityMapper;
-    private final IFeignClientSpringService feignClientSpringService;
+    private final IUserFeignClientService feignClientSpringService;
     private final IDetailsUserMapper detailsUserMapper;
     private final RestaurantJpaAdapter restaurantJpaAdapter;
     private final IOrderRepository orderRepository;
     private final IOrderEntityMapper orderEntityMapper;
     private final IOrderDishRepository orderDishRepository;
+    private final ITwilioFeignClientService twilioFeignClientService;
 
     @Bean
     public IRestaurantPersistencePort restaurantPersistencePort(){
@@ -80,7 +82,16 @@ public class BeanConfiguration {
 
     @Bean
     public IOrderPersistencePort orderPersistencePort(){
-        return new OrderJpaAdapter(orderRepository, orderDishRepository, dishRepository, restaurantEmpRepository, orderEntityMapper, feignClientSpringService);
+        return new OrderJpaAdapter(
+                orderRepository,
+                orderDishRepository,
+                restaurantRepository,
+                dishRepository,
+                restaurantEmpRepository,
+                orderEntityMapper,
+                feignClientSpringService,
+                twilioFeignClientService,
+                restaurantEmpEntityMapper);
     }
 
     @Bean

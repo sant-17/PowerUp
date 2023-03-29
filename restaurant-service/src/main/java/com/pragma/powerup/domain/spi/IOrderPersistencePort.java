@@ -9,4 +9,7 @@ public interface IOrderPersistencePort {
     OrderModel saveOrder(OrderModel orderModel);
     List<OrderModel> getOrdersByStatus(Integer pageNumber, Integer pageSize, String status);
     OrderModel setChef(Long id, OrderModel orderModel);
+    OrderModel setOrderStatusReady(Long id);
+    OrderModel setOrderStatusDelivered(Long id);
+    OrderModel cancelOrder(Long id);
 }

@@ -45,4 +45,6 @@ public class OrderEntity {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDishesEntity> orderDishes;
+
+    private Integer code;
 }

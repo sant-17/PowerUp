@@ -1,6 +1,6 @@
 package com.pragma.powerup.infrastructure.security.aut;
 
-import com.pragma.powerup.application.dto.response.UserResponseDto;
+import com.pragma.powerup.infrastructure.feign.user.dto.response.UserResponseDto;
 import com.pragma.powerup.infrastructure.auth.UserAuthDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

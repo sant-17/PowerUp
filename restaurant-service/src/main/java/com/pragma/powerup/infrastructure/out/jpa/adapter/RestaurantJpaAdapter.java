@@ -1,13 +1,13 @@
 package com.pragma.powerup.infrastructure.out.jpa.adapter;
 
-import com.pragma.powerup.application.dto.response.UserResponseDto;
+import com.pragma.powerup.infrastructure.feign.user.dto.response.UserResponseDto;
 import com.pragma.powerup.domain.model.RestaurantModel;
 import com.pragma.powerup.domain.spi.IRestaurantPersistencePort;
 import com.pragma.powerup.infrastructure.exception.NonOwnerUserException;
 import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
 import com.pragma.powerup.infrastructure.exception.NoRestaurantFoundException;
 import com.pragma.powerup.infrastructure.exception.NoUserFoundException;
-import com.pragma.powerup.infrastructure.feign.service.IFeignClientSpringService;
+import com.pragma.powerup.infrastructure.feign.user.service.IUserFeignClientService;
 import com.pragma.powerup.infrastructure.out.jpa.entity.RestaurantEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IRestaurantEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRestaurantRepository;
@@ -26,7 +26,7 @@ public class     RestaurantJpaAdapter implements IRestaurantPersistencePort {
 
     private final IRestaurantRepository restaurantRepository;
     private final IRestaurantEntityMapper restaurantEntityMapper;
-    private final IFeignClientSpringService feignClientSpringService;
+    private final IUserFeignClientService feignClientSpringService;
 
     @Override
     public RestaurantModel saveRestaurant(RestaurantModel restaurantModel) {

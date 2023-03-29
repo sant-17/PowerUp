@@ -1,7 +1,7 @@
 package com.pragma.powerup.infrastructure.input.rest;
 
-import com.pragma.powerup.infrastructure.feign.dto.request.UserRequestDto;
-import com.pragma.powerup.infrastructure.feign.service.IFeignClientSpringService;
+import com.pragma.powerup.infrastructure.feign.user.dto.request.UserRequestDto;
+import com.pragma.powerup.infrastructure.feign.user.service.IUserFeignClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class UserRestController {
 
-    private final IFeignClientSpringService feignClientSpringService;
+    private final IUserFeignClientService feignClientSpringService;
 
 
     @PostMapping("/create-owner")

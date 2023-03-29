@@ -1,13 +1,13 @@
 package com.pragma.powerup.infrastructure.out.jpa.adapter;
 
-import com.pragma.powerup.application.dto.response.UserResponseDto;
+import com.pragma.powerup.infrastructure.feign.user.dto.response.UserResponseDto;
 import com.pragma.powerup.domain.model.DishModel;
 import com.pragma.powerup.domain.model.RestaurantModel;
 import com.pragma.powerup.domain.spi.IDishPersistencePort;
 import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
 import com.pragma.powerup.infrastructure.exception.NoDishFoundException;
 import com.pragma.powerup.infrastructure.exception.UsersDoNotMatchException;
-import com.pragma.powerup.infrastructure.feign.service.IFeignClientSpringService;
+import com.pragma.powerup.infrastructure.feign.user.service.IUserFeignClientService;
 import com.pragma.powerup.infrastructure.out.jpa.entity.DishEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IDishEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IDishRepository;
@@ -26,7 +26,7 @@ public class DishJpaAdapter implements IDishPersistencePort {
 
     private final IDishRepository dishRepository;
     private final IDishEntityMapper dishEntityMapper;
-    private final IFeignClientSpringService feignClientSpringService;
+    private final IUserFeignClientService feignClientSpringService;
     private final RestaurantJpaAdapter restaurantJpaAdapter;
 
 

@@ -1,8 +1,8 @@
-package com.pragma.powerup.infrastructure.feign;
+package com.pragma.powerup.infrastructure.feign.user;
 
-import com.pragma.powerup.infrastructure.feign.dto.request.EmployeeRequestDto;
-import com.pragma.powerup.infrastructure.feign.dto.request.UserRequestDto;
-import com.pragma.powerup.application.dto.response.UserResponseDto;
+import com.pragma.powerup.infrastructure.feign.user.dto.request.EmployeeRequestDto;
+import com.pragma.powerup.infrastructure.feign.user.dto.request.UserRequestDto;
+import com.pragma.powerup.infrastructure.feign.user.dto.response.UserResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

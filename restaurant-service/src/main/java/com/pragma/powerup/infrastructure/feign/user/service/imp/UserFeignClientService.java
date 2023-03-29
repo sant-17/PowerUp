@@ -1,11 +1,11 @@
-package com.pragma.powerup.infrastructure.feign.service.imp;
+package com.pragma.powerup.infrastructure.feign.user.service.imp;
 
-import com.pragma.powerup.application.dto.response.UserResponseDto;
+import com.pragma.powerup.infrastructure.feign.user.dto.response.UserResponseDto;
 import com.pragma.powerup.infrastructure.exception.UserAlreadyExistsException;
-import com.pragma.powerup.infrastructure.feign.IUserClientFeign;
-import com.pragma.powerup.infrastructure.feign.dto.request.EmployeeRequestDto;
-import com.pragma.powerup.infrastructure.feign.service.IFeignClientSpringService;
-import com.pragma.powerup.infrastructure.feign.dto.request.UserRequestDto;
+import com.pragma.powerup.infrastructure.feign.user.IUserClientFeign;
+import com.pragma.powerup.infrastructure.feign.user.dto.request.EmployeeRequestDto;
+import com.pragma.powerup.infrastructure.feign.user.service.IUserFeignClientService;
+import com.pragma.powerup.infrastructure.feign.user.dto.request.UserRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class FeignClientSpringService implements IFeignClientSpringService {
+public class UserFeignClientService implements IUserFeignClientService {
 
     private final IUserClientFeign userClientFeign;
 

@@ -9,5 +9,8 @@ public interface IOrderServicePort {
     void saveOrder(OrderModel orderModel);
     List<OrderModel> getOrdersByStatus(Integer pageNumber, Integer pageSize, String status);
     void setChef(Long id, OrderModel orderModel);
+    void setOrderStatusReady(Long id);
+    void setOrderStatusDelivered(Long id);
+    void cancelOrder(Long id);
 
 }

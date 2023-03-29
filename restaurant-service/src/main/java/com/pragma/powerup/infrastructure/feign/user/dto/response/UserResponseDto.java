@@ -1,4 +1,4 @@
-package com.pragma.powerup.application.dto.response;
+package com.pragma.powerup.infrastructure.feign.user.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +10,7 @@ public class UserResponseDto {
     private String name;
     private String surname;
     private Long identificationNumber;
+    private String phoneNumber;
     private String email;
     private String password;
     private RoleResponseDto role;

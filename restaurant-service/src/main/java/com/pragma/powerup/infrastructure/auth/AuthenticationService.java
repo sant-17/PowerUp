@@ -1,7 +1,7 @@
 package com.pragma.powerup.infrastructure.auth;
 
-import com.pragma.powerup.application.dto.response.UserResponseDto;
-import com.pragma.powerup.infrastructure.feign.service.IFeignClientSpringService;
+import com.pragma.powerup.infrastructure.feign.user.dto.response.UserResponseDto;
+import com.pragma.powerup.infrastructure.feign.user.service.IUserFeignClientService;
 import com.pragma.powerup.infrastructure.security.JwtService;
 import com.pragma.powerup.infrastructure.security.aut.DetailsUser;
 import com.pragma.powerup.infrastructure.security.aut.IDetailsUserMapper;
@@ -18,7 +18,7 @@ public class AuthenticationService {
     private final IDetailsUserMapper userDetailsMapper;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final IFeignClientSpringService feignClientSpringService;
+    private final IUserFeignClientService feignClientSpringService;
 
 
     public AuthenticationResponse  authenticate(AuthenticationRequest request) {

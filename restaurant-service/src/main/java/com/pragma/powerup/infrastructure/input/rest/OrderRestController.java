@@ -41,4 +41,22 @@ public class OrderRestController {
         orderSpringService.setChef(id, orderUpdateRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PutMapping("/set_ready/{id}")
+    public ResponseEntity<Void> setOrderStatusReady(@PathVariable("id") Long id){
+        orderSpringService.setOrderStatusReady(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/set_delivered/{id}")
+    public ResponseEntity<Void> setOrderStatusDelivered(@PathVariable("id") Long id){
+        orderSpringService.setOrderStatusDelivered(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<Void> cancelOrder(@PathVariable("id") Long id){
+        orderSpringService.cancelOrder(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

@@ -27,15 +27,16 @@ public class Security {
 
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/api/v1/auth/**").permitAll()
+                .antMatchers("/api/v1/dish/restaurant/**").permitAll()
                 .antMatchers("/api/v1/user/create-client").permitAll()
                 .antMatchers("/api/v1/restaurant/all/**").permitAll()
                 .antMatchers("/api/v1/dish/**").hasAuthority("PROPIETARIO")
-                .antMatchers("/api/v1/dish/all/**").permitAll()
                 .antMatchers("/api/v1/user/create-owner").hasAuthority("ADMINISTRADOR")
                 .antMatchers("/api/v1/restaurant/create").hasAuthority("ADMINISTRADOR")
                 .antMatchers("/api/v1/order/").hasAuthority("CLIENTE")
                 .antMatchers("/api/v1/order/get/**").hasAuthority("EMPLEADO")
                 .antMatchers("/api/v1/order/set-chef/").hasAuthority("EMPLEADO")
+                .antMatchers("/api/v1/order/set-ready/").hasAuthority("EMPLEADO")
 
 
                 .anyRequest()

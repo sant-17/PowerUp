@@ -2,6 +2,7 @@ package com.pragma.powerup.infrastructure.out.jpa.repository;
 
 import com.pragma.powerup.infrastructure.out.jpa.entity.OrderEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.RestaurantEmpEntity;
+import com.pragma.powerup.infrastructure.out.jpa.entity.RestaurantEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,12 +25,6 @@ public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
     )
     Boolean orderByClientInProcess(Long client, String firstStatus, String secondStatus, String thirdStatus);
 
-    List<OrderEntity> findByChefAndStatus(RestaurantEmpEntity chef, String status, Pageable pageable);
+    List<OrderEntity> findByRestaurantAndStatus(RestaurantEntity restaurant, String status, Pageable pageable);
 
-    //@Query("" +
-    //        "SELECT o " +
-    //        "FROM OrderEntity o" +
-    //        "WHERE o.id in :ids"
-    //)
-    //List<OrderEntity> findByIds(@Param("ids") List<Long> orders);
 }

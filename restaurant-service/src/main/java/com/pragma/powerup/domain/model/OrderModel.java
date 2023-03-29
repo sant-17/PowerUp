@@ -11,8 +11,9 @@ public class OrderModel {
     private RestaurantEmpModel chef;
     private RestaurantModel restaurant;
     private List<OrderDishesModel> dishes;
+    private Integer code;
 
-    public OrderModel(Long id, Long client, LocalDateTime date, String status, RestaurantEmpModel chef, RestaurantModel restaurant, List<OrderDishesModel> dishes) {
+    public OrderModel(Long id, Long client, LocalDateTime date, String status, RestaurantEmpModel chef, RestaurantModel restaurant, List<OrderDishesModel> dishes, Integer code) {
         this.id = id;
         this.client = client;
         this.date = date;
@@ -20,6 +21,7 @@ public class OrderModel {
         this.chef = chef;
         this.restaurant = restaurant;
         this.dishes = dishes;
+        this.code = code;
     }
 
     public Long getId() {
@@ -76,5 +78,13 @@ public class OrderModel {
 
     public void setDishes(List<OrderDishesModel> dishes) {
         this.dishes = dishes;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
     }
 }

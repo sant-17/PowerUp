@@ -13,3 +13,7 @@ eureka:
     client:
         service-url:
             defaultZone: http://localhost:8099/eureka
+
+TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID}
+TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
+TWILIO_OUTGOING_SMS_NUMBER: ${TWILIO_OUTGOING_SMS_NUMBER}

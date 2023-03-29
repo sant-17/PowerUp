@@ -1,4 +1,4 @@
-package com.pragma.powerup.infrastructure.feign.dto.request;
+package com.pragma.powerup.infrastructure.feign.user.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;

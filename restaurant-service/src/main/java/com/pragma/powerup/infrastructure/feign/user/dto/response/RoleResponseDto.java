@@ -1,4 +1,4 @@
-package com.pragma.powerup.application.dto.response;
+package com.pragma.powerup.infrastructure.feign.user.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

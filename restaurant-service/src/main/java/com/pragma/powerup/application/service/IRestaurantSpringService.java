@@ -10,4 +10,5 @@ public interface IRestaurantSpringService {
     List<RestaurantResponseDto> getAllRestaurants();
     RestaurantResponseDto getRestaurantById(Long id);
     List<RestaurantResponseDto> getAllRestaurantsPaging(Integer pageNumber, Integer pageSize);
+
 }

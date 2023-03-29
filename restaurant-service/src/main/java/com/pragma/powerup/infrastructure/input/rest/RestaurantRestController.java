@@ -34,7 +34,7 @@ public class RestaurantRestController {
         return ResponseEntity.ok(restaurantSpringService.getRestaurantById(id));
     }
 
-    @GetMapping("/all/{size}/{number}")
+    @GetMapping("/all/size/{size}/number/{number}")
     public ResponseEntity<List<RestaurantResponseDto>> getAllRestaurants(@PathVariable("number") Integer number, @PathVariable("size") Integer size){
         return ResponseEntity.ok(restaurantSpringService.getAllRestaurantsPaging(number, size));
     }
