@@ -24,7 +24,7 @@ public class RestaurantRestController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public ResponseEntity<List<RestaurantResponseDto>> getAllRestaurants(){
         return ResponseEntity.ok(restaurantSpringService.getAllRestaurants());
     }

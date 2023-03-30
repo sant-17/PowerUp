@@ -20,7 +20,7 @@ import java.util.List;
 public class DishRestController {
     private final IDishSpringService dishSpringService;
 
-    @PostMapping("/")
+    @PostMapping("/create")
     public ResponseEntity<Void> saveDish(@Valid @RequestBody DishRequestDto dishRequestDto){
         dishSpringService.saveDish(dishRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -36,7 +36,7 @@ public class DishRestController {
         return ResponseEntity.ok(dishSpringService.getDishById(id));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Void> updateDishById(@PathVariable("id") Long id,@Valid @RequestBody DishUpdateRequestDto dishUpdateRequestDto){
         dishSpringService.updateDishById(id, dishUpdateRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);

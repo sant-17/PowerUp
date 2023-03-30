@@ -9,7 +9,7 @@ import java.util.List;
 public interface IOrderSpringService {
     void saveOrder(OrderRequestDto orderRequestDto);
     List<OrderResponseDto> getOrdersByStatus(Integer pageNumber, Integer pageSize, String status);
-    void setChef(Long id, OrderUpdateRequestDto orderUpdateRequestDto);
+    void setChef(Long id);
     void setOrderStatusReady(Long id);
     void setOrderStatusDelivered(Long id, Integer code);
     void cancelOrder(Long id);

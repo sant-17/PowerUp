@@ -25,20 +25,20 @@ public class OrderRestController {
 
     private final IOrderSpringService orderSpringService;
 
-    @PostMapping("/")
+    @PostMapping("/create")
     public ResponseEntity<Void> saveOrder(@Valid @RequestBody OrderRequestDto orderRequestDto){
         orderSpringService.saveOrder(orderRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/get/{status}/{size}/{number}/")
+    @GetMapping("/status/{status}/size/{size}/number/{number}")
     public ResponseEntity<List<OrderResponseDto>> getOrdersByStatus(@PathVariable("status") String status, @PathVariable("size") Integer size, @PathVariable("number") Integer number){
         return ResponseEntity.ok(orderSpringService.getOrdersByStatus(number, size, status));
     }
 
-    @PutMapping("/set-chef/{id}")
-    public ResponseEntity<Void> setOrdersChef(@PathVariable("id") Long id, @RequestBody OrderUpdateRequestDto orderUpdateRequestDto){
-        orderSpringService.setChef(id, orderUpdateRequestDto);
+    @PutMapping("/set_chef/{id}")
+    public ResponseEntity<Void> setOrdersChef(@PathVariable("id") Long id){
+        orderSpringService.setChef(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

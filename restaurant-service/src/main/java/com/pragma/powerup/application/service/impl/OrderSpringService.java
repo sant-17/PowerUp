@@ -38,9 +38,8 @@ public class OrderSpringService implements IOrderSpringService {
     }
 
     @Override
-    public void setChef(Long id, OrderUpdateRequestDto orderUpdateRequestDto) {
-        OrderModel orderModel = orderUpdateRequestMapper.toOrder(orderUpdateRequestDto);
-        orderServicePort.setChef(id, orderModel);
+    public void setChef(Long id) {
+        orderServicePort.setChef(id);
 
     }
 

@@ -13,9 +13,10 @@ public enum ExceptionResponse {
     NO_ORDER_FOUND("No order found for requested id"),
     NO_DISH_FOUND("No dish found for the requested ID"),
     USER_WRONG_RESTAURANT("User logged it's from a different restaurant"),
-    WRONG_CODE_ORDER("User logged it's from a different restaurant"),
+    WRONG_CODE_ORDER("Code requested it's wrong"),
     CANT_CANCEL_ORDER("Order can't be cancelled, contact the restaurant"),
     WRONG_ORDER_CLIENT("Client logged must be the same client from the order"),
+    WRONG_DISH_ORDER("Dish requested must be from the same order's restaurant"),
     NEW_STATUS_INVALID("The new status it's invalid for this order. Check flowchart");
 
     private final String message;

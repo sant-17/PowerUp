@@ -24,20 +24,56 @@ public class Security {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-
                 .antMatchers("/swagger-ui/**").permitAll()
-                .antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers("/api/v1/dish/restaurant/**").permitAll()
-                .antMatchers("/api/v1/user/create-client").permitAll()
-                .antMatchers("/api/v1/restaurant/all/**").permitAll()
-                .antMatchers("/api/v1/dish/**").hasAuthority("PROPIETARIO")
-                .antMatchers("/api/v1/user/create-owner").hasAuthority("ADMINISTRADOR")
-                .antMatchers("/api/v1/restaurant/create").hasAuthority("ADMINISTRADOR")
-                .antMatchers("/api/v1/order/").hasAuthority("CLIENTE")
-                .antMatchers("/api/v1/order/get/**").hasAuthority("EMPLEADO")
-                .antMatchers("/api/v1/order/set-chef/").hasAuthority("EMPLEADO")
-                .antMatchers("/api/v1/order/set-ready/").hasAuthority("EMPLEADO")
 
+
+                //HU1
+                .antMatchers("/api/v1/user/create-owner").hasAuthority("ADMINISTRADOR")
+
+                //HU2
+                .antMatchers("/api/v1/restaurant/create").hasAuthority("ADMINISTRADOR")
+
+                //HU3
+                .antMatchers("/api/v1/dish/create").hasAuthority("PROPIETARIO")
+
+                //HU4
+                .antMatchers("/api/v1/dish/update/**").hasAuthority("PROPIETARIO")
+
+                //HU5
+                .antMatchers("/api/v1/auth/**").permitAll()
+
+                //HU6
+                .antMatchers("/api/v1/employee/create").hasAuthority("PROPIETARIO")
+
+                //HU7
+                .antMatchers("/api/v1/dish/active/**").hasAuthority("PROPIETARIO")
+
+                //HU8
+                .antMatchers("/api/v1/user/create-client").permitAll()
+
+                //HU9
+                .antMatchers("/api/v1/restaurant/all/**").permitAll()
+
+                //HU10
+                .antMatchers("/api/v1/dish/restaurant/**").permitAll()
+
+                //HU11
+                .antMatchers("/api/v1/order/create").hasAuthority("CLIENTE")
+
+                //HU12
+                .antMatchers("/api/v1/order/status/**").hasAuthority("EMPLEADO")
+
+                //HU13
+                .antMatchers("/api/v1/order/set_chef/**").hasAuthority("EMPLEADO")
+
+                //HU14
+                .antMatchers("/api/v1/order/set_ready/**").hasAuthority("EMPLEADO")
+
+                //HU15
+                .antMatchers("/api/v1/order/set_delivered/**").hasAuthority("EMPLEADO")
+
+                //HU16
+                .antMatchers("/api/v1/order/cancel/**").hasAuthority("CLIENTE")
 
                 .anyRequest()
                 .authenticated()
@@ -47,9 +83,6 @@ public class Security {
                 .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-
-
         return http.build();
     }
 

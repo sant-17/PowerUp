@@ -1,6 +1,7 @@
 package com.pragma.powerup.infrastructure.out.jpa.adapter;
 
 import com.pragma.powerup.domain.exception.NoRestaurantFoundException;
+import com.pragma.powerup.infrastructure.exception.DishFromDifferentRestaurantException;
 import com.pragma.powerup.infrastructure.exception.NoDishFoundException;
 import com.pragma.powerup.infrastructure.exception.NoUserFoundException;
 import com.pragma.powerup.infrastructure.feign.twilio.dto.request.SMSRequestDto;
@@ -11,12 +12,12 @@ import com.pragma.powerup.domain.model.OrderModel;
 import com.pragma.powerup.domain.spi.IOrderPersistencePort;
 import com.pragma.powerup.infrastructure.exception.NoOrderFoundException;
 import com.pragma.powerup.infrastructure.feign.user.service.IUserFeignClientService;
+import com.pragma.powerup.infrastructure.out.jpa.entity.DishEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.OrderDishesEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.OrderEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.RestaurantEmpEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.RestaurantEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IOrderEntityMapper;
-import com.pragma.powerup.infrastructure.out.jpa.mapper.IRestaurantEmpEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IDishRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IOrderDishRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IOrderRepository;
@@ -49,9 +50,15 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
         List<OrderDishesModel> orderDishesModels = orderModel.getDishes();
 
         for (OrderDishesModel order : orderDishesModels){
+            DishEntity dishEntity = dishRepository.findById(order.getDish())
+                            .orElseThrow(NoDishFoundException::new);
+            if (dishEntity.getRestaurant().getId() != orderModel.getRestaurant().getId()){
+                throw new DishFromDifferentRestaurantException();
+            }
+
             orderDishRepository.save(new OrderDishesEntity(
                     orderEntity,
-                    dishRepository.findById(order.getDish()).orElseThrow(NoDishFoundException::new),
+                    dishEntity,
                     order.getQuantity()
             ));
         }
@@ -77,7 +84,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
-    public OrderModel setChef(Long id, OrderModel orderModel) {
+    public OrderModel setChef(Long id) {
         UserResponseDto userResponseDto = feignClientSpringService.getUserByEmail(usernameToken());
         RestaurantEmpEntity employee = restaurantEmpRepository.findById(userResponseDto.getId())
                 .orElseThrow(NoUserFoundException::new);
@@ -124,7 +131,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     public OrderModel cancelOrder(Long id) {
         OrderEntity orderEntity = orderRepository.findById(id)
                 .orElseThrow(NoOrderFoundException::new);
-        orderEntity.setStatus("ENTREGADO");
+        orderEntity.setStatus("CANCELADO");
 
         orderRepository.save(orderEntity);
         return orderEntityMapper.toOrderModel(orderEntity);

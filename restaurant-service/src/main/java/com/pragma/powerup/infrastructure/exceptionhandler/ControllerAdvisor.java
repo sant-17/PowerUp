@@ -146,6 +146,12 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.WRONG_ORDER_CLIENT.getMessage()));
     }
 
+    @ExceptionHandler(DishFromDifferentRestaurantException.class)
+    public ResponseEntity<Map<String, String>> handleDishFromDifferentRestaurantException(
+            DishFromDifferentRestaurantException ignoredDishFromDifferentRestaurantException){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.WRONG_DISH_ORDER.getMessage()));
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException ex){

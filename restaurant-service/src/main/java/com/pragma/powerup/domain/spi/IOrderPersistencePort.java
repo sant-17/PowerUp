@@ -8,7 +8,7 @@ import java.util.List;
 public interface IOrderPersistencePort {
     OrderModel saveOrder(OrderModel orderModel);
     List<OrderModel> getOrdersByStatus(Integer pageNumber, Integer pageSize, String status);
-    OrderModel setChef(Long id, OrderModel orderModel);
+    OrderModel setChef(Long id);
     OrderModel setOrderStatusReady(Long id);
     OrderModel setOrderStatusDelivered(Long id, Integer code);
     OrderModel cancelOrder(Long id);

@@ -53,7 +53,7 @@ public class OrderUseCase implements IOrderServicePort {
     }
 
     @Override
-    public void setChef(Long id, OrderModel orderModel) {
+    public void setChef(Long id) {
         String usernameContext = userContextPort.getUserContext();
         Long employeeId = userIdPort.getUserIdByEmail(usernameContext);
         RestaurantEmpModel restaurantEmpModel = employeePersistencePort.getEmployeeById(employeeId);
@@ -68,8 +68,7 @@ public class OrderUseCase implements IOrderServicePort {
         if (!Objects.equals(actualOrderStatus, "PENDIENTE")){
             throw new NewOrderStatusNotValidException();
         }
-
-        orderPersistencePort.setChef(id, orderModel);
+        orderPersistencePort.setChef(id);
     }
 
     @Override
@@ -85,7 +84,7 @@ public class OrderUseCase implements IOrderServicePort {
         if (!Objects.equals(restaurantEmpModel.getRestaurant(), orderRestaurantId)){
             throw new UserFromDifferentRestaurantException();
         }
-        if (!Objects.equals(actualOrderStatus, "EN_PREPARACIÓN")){
+        if (!Objects.equals(actualOrderStatus, "EN_PREPARACION")){
             throw new NewOrderStatusNotValidException();
         }
         orderPersistencePort.setOrderStatusReady(id);
@@ -100,9 +99,12 @@ public class OrderUseCase implements IOrderServicePort {
         OrderModel orderModelById = orderPersistencePort.getOrderById(id);
         Long orderRestaurantId = orderModelById.getRestaurant().getId();
         String actualOrderStatus = orderModelById.getStatus();
+
+        Long idRestEmp = restaurantEmpModel.getRestaurant();
+
         Integer actualOrderCode = orderModelById.getCode();
 
-        if (!Objects.equals(restaurantEmpModel.getRestaurant(), orderRestaurantId)){
+        if (!Objects.equals(idRestEmp, orderRestaurantId)){
             throw new UserFromDifferentRestaurantException();
         }
         if (!Objects.equals(actualOrderStatus, "LISTO")){

@@ -39,7 +39,7 @@ public class DishUseCase implements IDishServicePort {
     @Override
     public void updateDishById(Long id, DishModel dishModel) {
         DishModel dishUpdated = dishPersistencePort.getDishById(id);
-        checkDishRestaurantOwnerPort.checkUsers(dishUpdated.getRestaurant().getOwner(), userContext.getUserContext());
+        checkDishRestaurantOwnerPort.checkUsers(dishUpdated.getRestaurant().getId(), userContext.getUserContext());
 
         if (dishModel.getPrice() != null){
             dishUpdated.setPrice(dishModel.getPrice());
@@ -54,7 +54,7 @@ public class DishUseCase implements IDishServicePort {
     @Override
     public void setDishActive(Long id, DishModel dishModel) {
         DishModel dishUpdated = dishPersistencePort.getDishById(id);
-        checkDishRestaurantOwnerPort.checkUsers(dishUpdated.getRestaurant().getOwner(), userContext.getUserContext());
+        checkDishRestaurantOwnerPort.checkUsers(dishUpdated.getRestaurant().getId(), userContext.getUserContext());
 
         if (dishModel.getActive() != null){
             dishUpdated.setActive(dishModel.getActive());
