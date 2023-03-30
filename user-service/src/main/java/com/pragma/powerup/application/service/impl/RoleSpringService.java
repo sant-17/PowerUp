@@ -27,7 +27,7 @@ public class RoleSpringService implements IRoleSpringService {
     }
 
     @Override
-    public List<RoleResponseDto> getAllUsers() {
+    public List<RoleResponseDto> getAllRoles() {
         return roleResponseMapper.toResponseList(roleServicePort.getAllRoles());
     }
 }

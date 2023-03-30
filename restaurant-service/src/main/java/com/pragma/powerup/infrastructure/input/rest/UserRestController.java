@@ -25,7 +25,6 @@ public class UserRestController {
     @PostMapping("/create-owner")
     public ResponseEntity<Void> saveUserAsOwner(@Valid @RequestBody UserRequestDto userRequestDto){
         feignClientSpringService.createOwner(userRequestDto);
-        userLoginApplication();
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -33,14 +32,5 @@ public class UserRestController {
     public ResponseEntity<Void> saveUserAsClient(@Valid @RequestBody UserRequestDto userRequestDto){
         feignClientSpringService.createClient(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    public static void userLoginApplication(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = null;
-        if (principal instanceof UserDetails){
-            userDetails = (UserDetails) principal;
-        }
-        System.out.println(userDetails.getUsername());
     }
 }

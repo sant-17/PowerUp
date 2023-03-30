@@ -1,5 +1,15 @@
 package com.pragma.powerup.infrastructure.configuration;
 
+import com.pragma.powerup.domain.spi.ICheckDishRestaurantOwnerPort;
+import com.pragma.powerup.domain.spi.ICheckEmpRestaurantOwnerPort;
+import com.pragma.powerup.domain.spi.ICheckUserCanOrderPort;
+import com.pragma.powerup.domain.spi.IUserContextPort;
+import com.pragma.powerup.domain.spi.IUserIdPort;
+import com.pragma.powerup.infrastructure.utils.CheckDishRestaurantOwnerAdapter;
+import com.pragma.powerup.infrastructure.utils.CheckEmpRestaurantOwnerAdapter;
+import com.pragma.powerup.infrastructure.utils.UserIdAdapter;
+import com.pragma.powerup.infrastructure.utils.UserMakeNewOrderAdapterPort;
+import com.pragma.powerup.infrastructure.utils.UsernameTokenContextAdapter;
 import com.pragma.powerup.infrastructure.feign.twilio.service.ITwilioFeignClientService;
 import com.pragma.powerup.infrastructure.feign.user.dto.response.UserResponseDto;
 import com.pragma.powerup.domain.api.IDishCategoryServicePort;
@@ -64,7 +74,6 @@ public class BeanConfiguration {
     private final IRestaurantEmpEntityMapper restaurantEmpEntityMapper;
     private final IUserFeignClientService feignClientSpringService;
     private final IDetailsUserMapper detailsUserMapper;
-    private final RestaurantJpaAdapter restaurantJpaAdapter;
     private final IOrderRepository orderRepository;
     private final IOrderEntityMapper orderEntityMapper;
     private final IOrderDishRepository orderDishRepository;
@@ -90,13 +99,22 @@ public class BeanConfiguration {
                 restaurantEmpRepository,
                 orderEntityMapper,
                 feignClientSpringService,
-                twilioFeignClientService,
-                restaurantEmpEntityMapper);
+                twilioFeignClientService);
+    }
+
+    @Bean
+    public ICheckUserCanOrderPort checkUserCanOrder(){
+        return new UserMakeNewOrderAdapterPort(orderRepository, feignClientSpringService);
+    }
+
+    @Bean
+    public IUserIdPort userIdPort(){
+        return new UserIdAdapter(feignClientSpringService);
     }
 
     @Bean
     public IOrderServicePort orderServicePort(){
-        return new OrderUseCase(orderPersistencePort());
+        return new OrderUseCase(orderPersistencePort(), restaurantEmpPersistencePort(), checkUserCanOrder(), userContextPort(), userIdPort());
     }
 
     @Bean
@@ -109,22 +127,41 @@ public class BeanConfiguration {
     }
     @Bean
     IDishPersistencePort dishPersistencePort(){
-        return new DishJpaAdapter(dishRepository, dishEntityMapper, feignClientSpringService, restaurantJpaAdapter);
+        return new DishJpaAdapter(dishRepository, dishEntityMapper);
+    }
+
+    @Bean
+    public IUserContextPort userContextPort(){
+        return new UsernameTokenContextAdapter();
+    }
+
+    @Bean
+    public ICheckDishRestaurantOwnerPort checkDishRestaurantOwnerPort(){
+        return new CheckDishRestaurantOwnerAdapter(restaurantRepository, feignClientSpringService);
     }
 
     @Bean
     public IDishServicePort dishServicePort(){
-        return new DishUseCase(dishPersistencePort());
+        return new DishUseCase(dishPersistencePort(), userContextPort(), checkDishRestaurantOwnerPort());
     }
+
+
 
     @Bean
     IRestaurantEmpPersistencePort restaurantEmpPersistencePort(){
-        return new RestaurantEmpJpaAdapter(restaurantEmpRepository, restaurantEmpEntityMapper, feignClientSpringService, restaurantJpaAdapter);
+        return new RestaurantEmpJpaAdapter(
+                restaurantEmpRepository,
+                restaurantEmpEntityMapper);
+    }
+
+    @Bean
+    public ICheckEmpRestaurantOwnerPort checkEmpRestaurantOwnerPort(){
+        return new CheckEmpRestaurantOwnerAdapter(restaurantRepository, feignClientSpringService);
     }
 
     @Bean
     public IRestaurantEmpServicePort restaurantEmpServicePort(){
-        return new RestaurantEmpUseCase(restaurantEmpPersistencePort());
+        return new RestaurantEmpUseCase(restaurantEmpPersistencePort(), userContextPort(), checkEmpRestaurantOwnerPort());
     }
 
     @Bean

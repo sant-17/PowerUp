@@ -16,7 +16,7 @@ public class RoleSaver {
 
     @PostConstruct
     public void init(){
-        List<RoleResponseDto> roleResponseDtoList = roleSpringService.getAllUsers();
+        List<RoleResponseDto> roleResponseDtoList = roleSpringService.getAllRoles();
         if (roleResponseDtoList.isEmpty()){
             RoleRequestDto administradorRequestDto = new RoleRequestDto("ADMINISTRADOR", "Un administrador");
             RoleRequestDto propietarioRequestDto = new RoleRequestDto("PROPIETARIO", "Un propietario");

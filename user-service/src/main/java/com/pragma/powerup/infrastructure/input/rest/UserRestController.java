@@ -96,28 +96,6 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Get all users")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "All users returned",
-                    content = @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(
-                                    schema = @Schema(
-                                            implementation = UserResponseDto.class)
-                            ))),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "No data found",
-                    content = @Content
-            )
-    })
-    @GetMapping("/")
-    public ResponseEntity<List<UserResponseDto>> getAllUsers(){
-        return ResponseEntity.ok(userSpringService.getAllUsers());
-    }
-
     @Operation(summary = "Get user by Id")
     @ApiResponses(value = {
             @ApiResponse(

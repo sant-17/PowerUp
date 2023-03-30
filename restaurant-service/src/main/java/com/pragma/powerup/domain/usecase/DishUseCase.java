@@ -2,20 +2,27 @@ package com.pragma.powerup.domain.usecase;
 
 import com.pragma.powerup.domain.api.IDishServicePort;
 import com.pragma.powerup.domain.model.DishModel;
+import com.pragma.powerup.domain.spi.ICheckDishRestaurantOwnerPort;
 import com.pragma.powerup.domain.spi.IDishPersistencePort;
+import com.pragma.powerup.domain.spi.IUserContextPort;
 
 import java.util.List;
 
 public class DishUseCase implements IDishServicePort {
     private final IDishPersistencePort dishPersistencePort;
+    private final IUserContextPort userContext;
+    private final ICheckDishRestaurantOwnerPort checkDishRestaurantOwnerPort;
 
-    public DishUseCase(IDishPersistencePort dishPersistencePort) {
+    public DishUseCase(IDishPersistencePort dishPersistencePort, IUserContextPort userContext, ICheckDishRestaurantOwnerPort checkDishRestaurantOwnerPort) {
         this.dishPersistencePort = dishPersistencePort;
+        this.userContext = userContext;
+        this.checkDishRestaurantOwnerPort = checkDishRestaurantOwnerPort;
     }
 
 
     @Override
     public void saveDish(DishModel dishModel) {
+        checkDishRestaurantOwnerPort.checkUsers(dishModel.getRestaurant().getId(), userContext.getUserContext());
         dishPersistencePort.saveDish(dishModel);
     }
 
@@ -31,12 +38,28 @@ public class DishUseCase implements IDishServicePort {
 
     @Override
     public void updateDishById(Long id, DishModel dishModel) {
-        dishPersistencePort.updateDishById(id, dishModel);
+        DishModel dishUpdated = dishPersistencePort.getDishById(id);
+        checkDishRestaurantOwnerPort.checkUsers(dishUpdated.getRestaurant().getOwner(), userContext.getUserContext());
+
+        if (dishModel.getPrice() != null){
+            dishUpdated.setPrice(dishModel.getPrice());
+        }
+        if (dishModel.getDescription() != null){
+            dishUpdated.setDescription(dishModel.getDescription());
+        }
+
+        dishPersistencePort.updateDishById(id, dishUpdated);
     }
 
     @Override
     public void setDishActive(Long id, DishModel dishModel) {
-        dishPersistencePort.setDishActive(id, dishModel);
+        DishModel dishUpdated = dishPersistencePort.getDishById(id);
+        checkDishRestaurantOwnerPort.checkUsers(dishUpdated.getRestaurant().getOwner(), userContext.getUserContext());
+
+        if (dishModel.getActive() != null){
+            dishUpdated.setActive(dishModel.getActive());
+        }
+        dishPersistencePort.setDishActive(id, dishUpdated);
     }
 
     @Override

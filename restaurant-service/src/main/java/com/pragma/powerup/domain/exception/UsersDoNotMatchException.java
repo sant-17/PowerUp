@@ -1,4 +1,4 @@
-package com.pragma.powerup.infrastructure.exception;
+package com.pragma.powerup.domain.exception;
 
 public class UsersDoNotMatchException extends RuntimeException{
     public UsersDoNotMatchException() {

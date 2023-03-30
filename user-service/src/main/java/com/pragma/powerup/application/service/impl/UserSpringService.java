@@ -43,11 +43,6 @@ public class UserSpringService implements IUserSpringService {
     }
 
     @Override
-    public List<UserResponseDto> getAllUsers() {
-        return userResponseMapper.toResponseList(userServicePort.getAllUsers());
-    }
-
-    @Override
     public UserResponseDto getUserById(Long id) {
         return userResponseMapper.toResponse(userServicePort.getUserById(id));
     }

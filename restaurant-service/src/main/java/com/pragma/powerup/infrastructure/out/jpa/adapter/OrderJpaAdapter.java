@@ -1,5 +1,8 @@
 package com.pragma.powerup.infrastructure.out.jpa.adapter;
 
+import com.pragma.powerup.domain.exception.NoRestaurantFoundException;
+import com.pragma.powerup.infrastructure.exception.NoDishFoundException;
+import com.pragma.powerup.infrastructure.exception.NoUserFoundException;
 import com.pragma.powerup.infrastructure.feign.twilio.dto.request.SMSRequestDto;
 import com.pragma.powerup.infrastructure.feign.twilio.service.ITwilioFeignClientService;
 import com.pragma.powerup.infrastructure.feign.user.dto.response.UserResponseDto;
@@ -7,7 +10,6 @@ import com.pragma.powerup.domain.model.OrderDishesModel;
 import com.pragma.powerup.domain.model.OrderModel;
 import com.pragma.powerup.domain.spi.IOrderPersistencePort;
 import com.pragma.powerup.infrastructure.exception.NoOrderFoundException;
-import com.pragma.powerup.infrastructure.exception.UserCantOrderException;
 import com.pragma.powerup.infrastructure.feign.user.service.IUserFeignClientService;
 import com.pragma.powerup.infrastructure.out.jpa.entity.OrderDishesEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.OrderEntity;
@@ -40,42 +42,31 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     private final IOrderEntityMapper orderEntityMapper;
     private final IUserFeignClientService feignClientSpringService;
     private final ITwilioFeignClientService twilioFeignClientService;
-    private final IRestaurantEmpEntityMapper restaurantEmpEntityMapper;
 
     @Override
     public OrderModel saveOrder(OrderModel orderModel) {
-        UserResponseDto userResponseDto = feignClientSpringService.getUserByEmail(usernameToken());
-        Boolean condition = orderRepository.orderByClientInProcess(
-            userResponseDto.getId(),
-            "PENDIENTE",
-            "EN_PREPARACION",
-            "LISTO"
-        );
-
-        if (condition){
-            throw new UserCantOrderException();
-        }
-
-        orderModel.setClient(userResponseDto.getId());
         OrderEntity orderEntity = orderRepository.save(orderEntityMapper.toEntity(orderModel));
         List<OrderDishesModel> orderDishesModels = orderModel.getDishes();
 
         for (OrderDishesModel order : orderDishesModels){
             orderDishRepository.save(new OrderDishesEntity(
                     orderEntity,
-                    dishRepository.findById(order.getDish()).orElse(null),
+                    dishRepository.findById(order.getDish()).orElseThrow(NoDishFoundException::new),
                     order.getQuantity()
             ));
         }
-
         return orderEntityMapper.toOrderModel(orderEntity);
     }
 
     @Override
     public List<OrderModel> getOrdersByStatus(Integer pageNumber, Integer pageSize, String status) {
         UserResponseDto userResponseDto = feignClientSpringService.getUserByEmail(usernameToken());
-        RestaurantEmpEntity restaurantEmpEntity = restaurantEmpRepository.findById(userResponseDto.getId()).orElse(null);
-        RestaurantEntity restaurant = restaurantRepository.findById(restaurantEmpEntity.getRestaurant()).orElse(null);
+
+        RestaurantEmpEntity restaurantEmpEntity = restaurantEmpRepository
+                .findById(userResponseDto.getId()).orElseThrow(NoUserFoundException::new);
+
+        RestaurantEntity restaurant = restaurantRepository
+                .findById(restaurantEmpEntity.getRestaurant()).orElseThrow(NoRestaurantFoundException::new);
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
@@ -88,45 +79,43 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     @Override
     public OrderModel setChef(Long id, OrderModel orderModel) {
         UserResponseDto userResponseDto = feignClientSpringService.getUserByEmail(usernameToken());
-        RestaurantEmpEntity restaurantEmpEntity = restaurantEmpRepository.findById(userResponseDto.getId()).orElse(null);
+        RestaurantEmpEntity employee = restaurantEmpRepository.findById(userResponseDto.getId())
+                .orElseThrow(NoUserFoundException::new);
 
-        OrderModel orderModelNew = orderEntityMapper.toOrderModel(orderRepository.findById(id)
-                .orElseThrow(NoOrderFoundException::new));
-
-        if (orderModel.getChef() != null){
-            orderModelNew.setChef(restaurantEmpEntityMapper.toRestaurantEmpModel(restaurantEmpEntity));
-        }
-
-        OrderEntity orderEntity = orderRepository.save(orderEntityMapper.toEntity(orderModelNew));
-        return orderEntityMapper.toOrderModel(orderEntity);
-    }
-
-    @Override
-    public OrderModel setOrderStatusReady(Long id) {
-        OrderEntity orderEntity = orderRepository.findById(id)
+        OrderEntity orderEntity = orderRepository
+                .findById(id)
                 .orElseThrow(NoOrderFoundException::new);
-        orderEntity.setStatus("LISTO");
 
-        Integer randomCode = (int) Math.floor(Math.random() *(999999 - 100000 + 1) + 100000);
-        orderEntity.setCode(randomCode);
-
-        UserResponseDto userResponseDto = feignClientSpringService.getUserById(orderEntity.getClient());
-
-        twilioFeignClientService.sendMessage(new SMSRequestDto(
-                userResponseDto.getPhoneNumber(),
-                Integer.toString(randomCode)
-        ));
+        orderEntity.setChef(employee);
+        orderEntity.setStatus("EN_PREPARACION");
 
         orderRepository.save(orderEntity);
         return orderEntityMapper.toOrderModel(orderEntity);
     }
 
     @Override
-    public OrderModel setOrderStatusDelivered(Long id) {
+    public OrderModel setOrderStatusReady(Long id) {
+        OrderEntity orderEntity = orderRepository
+                .findById(id)
+                .orElseThrow(NoOrderFoundException::new);
+
+        orderEntity.setStatus("LISTO");
+
+        Integer randomCode = (int) Math.floor(Math.random() *(999999 - 100000 + 1) + 100000);
+        orderEntity.setCode(randomCode);
+
+        UserResponseDto userResponseDto = feignClientSpringService.getUserById(orderEntity.getClient());
+        twilioFeignClientService.sendMessage(new SMSRequestDto(userResponseDto.getPhoneNumber(), Integer.toString(randomCode)));
+
+        orderRepository.save(orderEntity);
+        return orderEntityMapper.toOrderModel(orderEntity);
+    }
+
+    @Override
+    public OrderModel setOrderStatusDelivered(Long id, Integer code) {
         OrderEntity orderEntity = orderRepository.findById(id)
                 .orElseThrow(NoOrderFoundException::new);
         orderEntity.setStatus("ENTREGADO");
-
         orderRepository.save(orderEntity);
         return orderEntityMapper.toOrderModel(orderEntity);
     }
@@ -139,6 +128,12 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
 
         orderRepository.save(orderEntity);
         return orderEntityMapper.toOrderModel(orderEntity);
+    }
+
+    @Override
+    public OrderModel getOrderById(Long id) {
+        return orderEntityMapper.toOrderModel(orderRepository.findById(id)
+                .orElseThrow(NoOrderFoundException::new));
     }
 
     public static String usernameToken(){

@@ -11,6 +11,6 @@ public interface IOrderSpringService {
     List<OrderResponseDto> getOrdersByStatus(Integer pageNumber, Integer pageSize, String status);
     void setChef(Long id, OrderUpdateRequestDto orderUpdateRequestDto);
     void setOrderStatusReady(Long id);
-    void setOrderStatusDelivered(Long id);
+    void setOrderStatusDelivered(Long id, Integer code);
     void cancelOrder(Long id);
 }

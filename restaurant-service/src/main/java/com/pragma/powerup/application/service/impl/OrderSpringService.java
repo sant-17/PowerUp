@@ -29,16 +29,12 @@ public class OrderSpringService implements IOrderSpringService {
     @Override
     public void saveOrder(OrderRequestDto orderRequestDto) {
         OrderModel orderModel = orderRequestMapper.toOrder(orderRequestDto);
-        orderModel.setDate(LocalDateTime.now());
-        orderModel.setStatus("PENDIENTE");
         orderServicePort.saveOrder(orderModel);
     }
 
     @Override
     public List<OrderResponseDto> getOrdersByStatus(Integer pageNumber, Integer pageSize, String status) {
-        return orderResponseMapper.toOrderList(
-                orderServicePort.getOrdersByStatus(pageNumber, pageSize, status)
-        );
+        return orderResponseMapper.toOrderList(orderServicePort.getOrdersByStatus(pageNumber, pageSize, status));
     }
 
     @Override
@@ -54,8 +50,8 @@ public class OrderSpringService implements IOrderSpringService {
     }
 
     @Override
-    public void setOrderStatusDelivered(Long id) {
-        orderServicePort.setOrderStatusDelivered(id);
+    public void setOrderStatusDelivered(Long id, Integer code) {
+        orderServicePort.setOrderStatusDelivered(id, code);
     }
 
     @Override

@@ -48,9 +48,9 @@ public class OrderRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/set_delivered/{id}")
-    public ResponseEntity<Void> setOrderStatusDelivered(@PathVariable("id") Long id){
-        orderSpringService.setOrderStatusDelivered(id);
+    @PutMapping("/set_delivered/{id}/code/{code}")
+    public ResponseEntity<Void> setOrderStatusDelivered(@PathVariable("id") Long id, @PathVariable("code") Integer code){
+        orderSpringService.setOrderStatusDelivered(id, code);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

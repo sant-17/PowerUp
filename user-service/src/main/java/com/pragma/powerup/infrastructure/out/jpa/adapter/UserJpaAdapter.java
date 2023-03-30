@@ -30,30 +30,14 @@ public class UserJpaAdapter implements IUserPersistencePort {
     }
 
     @Override
-    public List<UserModel> getAllUsers() {
-        List<UserEntity> entityList = userRepository.findAll();
-        if (entityList.isEmpty()){
-            throw new NoDataFoundException();
-        }
-        return userEntityMapper.toUserModelList(entityList);
-    }
-
-    @Override
     public UserModel getUserById(Long id) {
         return userEntityMapper.toUserModel(userRepository.findById(id)
                         .orElse(new UserEntity()));
-                //.orElseThrow(NoUserFoundException::new));
     }
 
     @Override
     public UserModel getUserByEmail(String email) {
         return userEntityMapper.toUserModel(userRepository.findByEmail(email)
                 .orElse(new UserEntity()));
-        //try {
-        //    return userEntityMapper.toUserModel(userRepository.findByEmail(email).get());
-        //}
-        //catch (NoSuchElementException ex){
-        //    return new UserModel();
-        //}
     }
 }

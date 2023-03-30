@@ -15,6 +15,9 @@ public class RestaurantUseCase implements IRestaurantServicePort {
 
     @Override
     public void saveRestaurant(RestaurantModel restaurantModel) {
+        if (!restaurantModel.getPhoneNumber().substring(0,1).equals("+")){
+            restaurantModel.setPhoneNumber("+".concat(restaurantModel.getPhoneNumber()));
+        }
         restaurantPersistencePort.saveRestaurant(restaurantModel);
     }
 

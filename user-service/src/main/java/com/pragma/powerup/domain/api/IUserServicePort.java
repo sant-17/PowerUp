@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface IUserServicePort {
     void saveUser(UserModel userModel);
-    List<UserModel> getAllUsers();
     UserModel getUserById(Long id);
     UserModel getUserByEmail(String email);
 }

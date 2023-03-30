@@ -1,5 +1,13 @@
 package com.pragma.powerup.infrastructure.exceptionhandler;
 
+import com.pragma.powerup.domain.exception.InvalidCodeException;
+import com.pragma.powerup.domain.exception.NewOrderStatusNotValidException;
+import com.pragma.powerup.domain.exception.NoRestaurantFoundException;
+import com.pragma.powerup.domain.exception.OrderCantBeCancelledException;
+import com.pragma.powerup.domain.exception.OrderWithWrongClientException;
+import com.pragma.powerup.domain.exception.UserCantOrderException;
+import com.pragma.powerup.domain.exception.UserFromDifferentRestaurantException;
+import com.pragma.powerup.domain.exception.UsersDoNotMatchException;
 import com.pragma.powerup.infrastructure.exception.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -56,7 +64,7 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(NonOwnerUserException.class)
     public ResponseEntity<Map<String, String>> handleNonUserOwnerException(
-            NonAdminUserException ignoredNonUserOwnerException){
+            NonOwnerUserException ignoredNonUserOwnerException){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NON_OWNER_USER.getMessage()));
     }
@@ -96,11 +104,46 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_CANT_ORDER.getMessage()));
     }
 
+    @ExceptionHandler(UserFromDifferentRestaurantException.class)
+    public ResponseEntity<Map<String, String>> handleUserCantOrderException(
+            UserFromDifferentRestaurantException ignoredUserDifferentRestaurantException){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_WRONG_RESTAURANT.getMessage()));
+    }
+
     @ExceptionHandler(NoOrderFoundException.class)
     public ResponseEntity<Map<String, String>> handleNoOrderFoundException(
             NoOrderFoundException ignoredNoOrderFoundException){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NO_ORDER_FOUND.getMessage()));
+    }
+
+    @ExceptionHandler(NewOrderStatusNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleNewOrderStatusNotValidException(
+            NewOrderStatusNotValidException ignoredNewOrderStatusNotValidException){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NEW_STATUS_INVALID.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidCodeException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidCodeExceptionException(
+            InvalidCodeException ignoredInvalidCodeExceptionException){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.WRONG_CODE_ORDER.getMessage()));
+    }
+
+    @ExceptionHandler(OrderCantBeCancelledException.class)
+    public ResponseEntity<Map<String, String>> handleOrderCantBeCancelledException(
+            OrderCantBeCancelledException ignoredOrderCantBeCancelledException){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.CANT_CANCEL_ORDER.getMessage()));
+    }
+
+    @ExceptionHandler(OrderWithWrongClientException.class)
+    public ResponseEntity<Map<String, String>> handleOrderWithWrongClientException(
+            OrderWithWrongClientException ignoredOrderWithWrongClientException){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.WRONG_ORDER_CLIENT.getMessage()));
     }
 
 

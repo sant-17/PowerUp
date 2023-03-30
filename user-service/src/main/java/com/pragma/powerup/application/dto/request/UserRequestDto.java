@@ -18,8 +18,9 @@ public class UserRequestDto {
     @NotBlank(message = "Field 'surname' it's required")
     private String surname;
 
-    @NotNull(message = "Field 'identificationNumber' it's required")
-    private Long identificationNumber;
+    @Pattern(regexp = "^[0-9]*$", message = "Field 'identificationNumber' must be only numbers")
+    @NotBlank(message = "Field 'identificationNumber' it's required")
+    private String identificationNumber;
 
     @Pattern(regexp = "^\\+?573[0-2]\\d{8}$", message = "Field 'numberPhone' must be a valid number phone. Enter the format +573...")
     @NotBlank(message = "Field 'phoneNumber' it's required")

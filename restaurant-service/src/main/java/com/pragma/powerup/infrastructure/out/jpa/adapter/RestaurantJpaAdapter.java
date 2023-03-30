@@ -5,7 +5,7 @@ import com.pragma.powerup.domain.model.RestaurantModel;
 import com.pragma.powerup.domain.spi.IRestaurantPersistencePort;
 import com.pragma.powerup.infrastructure.exception.NonOwnerUserException;
 import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
-import com.pragma.powerup.infrastructure.exception.NoRestaurantFoundException;
+import com.pragma.powerup.domain.exception.NoRestaurantFoundException;
 import com.pragma.powerup.infrastructure.exception.NoUserFoundException;
 import com.pragma.powerup.infrastructure.feign.user.service.IUserFeignClientService;
 import com.pragma.powerup.infrastructure.out.jpa.entity.RestaurantEntity;
@@ -15,14 +15,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 @RequiredArgsConstructor
-public class     RestaurantJpaAdapter implements IRestaurantPersistencePort {
+public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
 
     private final IRestaurantRepository restaurantRepository;
     private final IRestaurantEntityMapper restaurantEntityMapper;
@@ -31,14 +29,12 @@ public class     RestaurantJpaAdapter implements IRestaurantPersistencePort {
     @Override
     public RestaurantModel saveRestaurant(RestaurantModel restaurantModel) {
         UserResponseDto userResponseDto = feignClientSpringService.getUserById(restaurantModel.getOwner());
-
         if (userResponseDto.getEmail() == null){
             throw new NoUserFoundException();
         }
         if (!userResponseDto.getRole().getName().equals("PROPIETARIO")){
             throw new NonOwnerUserException();
         }
-
         RestaurantEntity restaurantEntity = restaurantRepository.save(restaurantEntityMapper.toEntity(restaurantModel));
         return restaurantEntityMapper.toRestaurantModel(restaurantEntity);
     }

@@ -22,13 +22,14 @@ public class RestaurantRequestDto {
     @NotNull(message = "Field 'owner' it's required")
     private Long owner;
 
-    @Pattern(regexp = "^\\+573[0-2]\\d{8}$", message = "Field 'numberPhone' must be a valid number phone. Enter the format +573...")
+    @Pattern(regexp = "^\\+?573[0-2]\\d{8}$", message = "Field 'numberPhone' must be a valid number phone. Enter the format +573...")
     @NotBlank(message = "Field 'phoneNumber' it's required")
     @Size(max = 13, message = "Field 'phoneNumber' must be maximum 13 characters")
     private String phoneNumber;
 
+    @Pattern(regexp = "^[0-9]*$", message = "Field 'nit' must be only numbers")
     @NotNull(message = "Field 'nit' it's required")
-    private Long nit;
+    private String nit;
 
     @NotBlank(message = "Field 'logoUrl' it's required")
     private String logoUrl;

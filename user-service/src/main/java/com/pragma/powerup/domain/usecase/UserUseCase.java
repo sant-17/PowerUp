@@ -5,8 +5,6 @@ import com.pragma.powerup.domain.model.UserModel;
 import com.pragma.powerup.domain.spi.IPasswordEncoder;
 import com.pragma.powerup.domain.spi.IUserPersistencePort;
 
-import java.util.List;
-
 public class UserUseCase implements IUserServicePort {
     private final IUserPersistencePort userPersistencePort;
     private final IPasswordEncoder passwordEncoder;
@@ -23,11 +21,6 @@ public class UserUseCase implements IUserServicePort {
             userModel.setPhoneNumber("+".concat(userModel.getPhoneNumber()));
         }
         userPersistencePort.saveUser(userModel);
-    }
-
-    @Override
-    public List<UserModel> getAllUsers() {
-        return userPersistencePort.getAllUsers();
     }
 
     @Override

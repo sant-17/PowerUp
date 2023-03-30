@@ -9,8 +9,6 @@ public interface IUserSpringService {
     void saveUserAsOwner(UserRequestDto userRequestDto);
     void saveUserAsEmployee(UserRequestDto userRequestDto);
     void saveUserAsClient(UserRequestDto userRequestDto);
-    List<UserResponseDto> getAllUsers();
     UserResponseDto getUserById(Long id);
     UserFeignResponseDto getUserByEmail(String email);
-
 }

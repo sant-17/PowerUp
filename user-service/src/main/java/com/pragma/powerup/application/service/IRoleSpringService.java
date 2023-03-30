@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IRoleSpringService {
     void saveRole(RoleRequestDto roleRequestDto);
-    List<RoleResponseDto> getAllUsers();
+    List<RoleResponseDto> getAllRoles();
 }
