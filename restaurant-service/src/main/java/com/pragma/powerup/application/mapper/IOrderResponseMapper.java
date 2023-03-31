@@ -14,4 +14,5 @@ public interface IOrderResponseMapper {
 
     OrderResponseDto toResponse(OrderModel orderModel);
     List<OrderResponseDto> toOrderList(List<OrderModel> orderModels);
+
 }

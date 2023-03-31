@@ -26,5 +26,6 @@ public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
     Boolean orderByClientInProcess(Long client, String firstStatus, String secondStatus, String thirdStatus);
 
     List<OrderEntity> findByRestaurantAndStatus(RestaurantEntity restaurant, String status, Pageable pageable);
+    List<OrderEntity> findByRestaurant(RestaurantEntity restaurant);
 
 }

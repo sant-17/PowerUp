@@ -28,6 +28,9 @@ ext {
 	openApiVersion = "1.6.11"
 	springCloudVersion = "3.1.4"
 	springSecurityVersion = "2.7.9"
+	h2Version = "2.1.214"
+	mockitoVersion = "5.2.0"
+	jUnitVersion = "5.8.1"
 }
 
 dependencies {
@@ -35,7 +38,14 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-validation:${springBootVersion}"
 	implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
 	developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
+
 	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+	testImplementation "com.h2database:h2:${h2Version}"
+
+	testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+	testImplementation "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
+	testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
+	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
 
 	implementation "org.springframework.boot:spring-boot-starter-security:${springSecurityVersion}"
 

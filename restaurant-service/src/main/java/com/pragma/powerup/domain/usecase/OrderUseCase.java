@@ -2,6 +2,8 @@ package com.pragma.powerup.domain.usecase;
 
 import com.pragma.powerup.domain.api.IOrderServicePort;
 import com.pragma.powerup.domain.exception.InvalidCodeException;
+import com.pragma.powerup.domain.exception.InvalidPageNumberException;
+import com.pragma.powerup.domain.exception.InvalidPageSizeException;
 import com.pragma.powerup.domain.exception.NewOrderStatusNotValidException;
 import com.pragma.powerup.domain.exception.OrderCantBeCancelledException;
 import com.pragma.powerup.domain.exception.OrderWithWrongClientException;
@@ -49,6 +51,12 @@ public class OrderUseCase implements IOrderServicePort {
 
     @Override
     public List<OrderModel> getOrdersByStatus(Integer pageNumber, Integer pageSize, String status) {
+        if (pageNumber < 0){
+            throw new InvalidPageNumberException();
+        }
+        if (pageSize <= 0){
+            throw new InvalidPageSizeException();
+        }
         return orderPersistencePort.getOrdersByStatus(pageNumber, pageSize, status);
     }
 

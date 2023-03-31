@@ -1,6 +1,8 @@
 package com.pragma.powerup.infrastructure.exceptionhandler;
 
 import com.pragma.powerup.domain.exception.InvalidCodeException;
+import com.pragma.powerup.domain.exception.InvalidPageNumberException;
+import com.pragma.powerup.domain.exception.InvalidPageSizeException;
 import com.pragma.powerup.domain.exception.NewOrderStatusNotValidException;
 import com.pragma.powerup.domain.exception.NoRestaurantFoundException;
 import com.pragma.powerup.domain.exception.OrderCantBeCancelledException;
@@ -39,6 +41,20 @@ public class ControllerAdvisor {
             NoDataFoundException ignoredNoDataFoundException) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NO_DATA_FOUND.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidPageNumberException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidPageNumberException(
+            InvalidPageNumberException ignoredInvalidPageNumberException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INVALID_PAGE_NUMBER.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidPageSizeException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidPageSizeException(
+            InvalidPageSizeException ignoredInvalidPageSizeException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INVALID_PAGE_SIZE.getMessage()));
     }
 
     @ExceptionHandler(NoRestaurantFoundException.class)
@@ -100,7 +116,7 @@ public class ControllerAdvisor {
     @ExceptionHandler(UserCantOrderException.class)
     public ResponseEntity<Map<String, String>> handleUserCantOrderException(
             UserCantOrderException ignoredUserCantOrderException){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_CANT_ORDER.getMessage()));
     }
 
@@ -114,7 +130,7 @@ public class ControllerAdvisor {
     @ExceptionHandler(NoOrderFoundException.class)
     public ResponseEntity<Map<String, String>> handleNoOrderFoundException(
             NoOrderFoundException ignoredNoOrderFoundException){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NO_ORDER_FOUND.getMessage()));
     }
 

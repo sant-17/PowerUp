@@ -1,6 +1,8 @@
 package com.pragma.powerup.domain.usecase;
 
 import com.pragma.powerup.domain.api.IDishServicePort;
+import com.pragma.powerup.domain.exception.InvalidPageNumberException;
+import com.pragma.powerup.domain.exception.InvalidPageSizeException;
 import com.pragma.powerup.domain.model.DishModel;
 import com.pragma.powerup.domain.spi.ICheckDishRestaurantOwnerPort;
 import com.pragma.powerup.domain.spi.IDishPersistencePort;
@@ -64,6 +66,12 @@ public class DishUseCase implements IDishServicePort {
 
     @Override
     public List<DishModel> getAllDishesPaging(Long restaurant, Integer pageNumber, Integer pageSize) {
+        if (pageNumber < 0){
+            throw new InvalidPageNumberException();
+        }
+        if (pageSize <= 0){
+            throw new InvalidPageSizeException();
+        }
         return dishPersistencePort.getAllDishesPaging(restaurant, pageNumber, pageSize);
     }
 

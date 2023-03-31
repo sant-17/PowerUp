@@ -24,7 +24,7 @@ public class Security {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/swagger-ui/*", "/v3/**").permitAll()
 
 
                 //HU1
@@ -85,12 +85,4 @@ public class Security {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web
-                .ignoring()
-                .antMatchers("/swagger-ui/**");
-    }
-
 }

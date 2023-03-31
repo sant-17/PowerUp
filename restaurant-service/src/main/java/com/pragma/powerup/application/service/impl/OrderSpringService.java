@@ -40,7 +40,6 @@ public class OrderSpringService implements IOrderSpringService {
     @Override
     public void setChef(Long id) {
         orderServicePort.setChef(id);
-
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.pragma.powerup.domain.usecase;
 
 import com.pragma.powerup.domain.api.IRestaurantServicePort;
+import com.pragma.powerup.domain.exception.InvalidPageNumberException;
+import com.pragma.powerup.domain.exception.InvalidPageSizeException;
 import com.pragma.powerup.domain.model.RestaurantModel;
 import com.pragma.powerup.domain.spi.IRestaurantPersistencePort;
 
@@ -33,6 +35,12 @@ public class RestaurantUseCase implements IRestaurantServicePort {
 
     @Override
     public List<RestaurantModel> getAllRestaurantsPaging(Integer pageNumber, Integer pageSize) {
+        if (pageNumber < 0){
+            throw new InvalidPageNumberException();
+        }
+        if (pageSize <= 0){
+            throw new InvalidPageSizeException();
+        }
         return restaurantPersistencePort.getAllRestaurantsPaging(pageNumber, pageSize);
     }
 }

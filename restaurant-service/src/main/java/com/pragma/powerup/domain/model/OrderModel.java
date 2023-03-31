@@ -13,6 +13,9 @@ public class OrderModel {
     private List<OrderDishesModel> dishes;
     private Integer code;
 
+    public OrderModel() {
+    }
+
     public OrderModel(Long id, Long client, LocalDateTime date, String status, RestaurantEmpModel chef, RestaurantModel restaurant, List<OrderDishesModel> dishes, Integer code) {
         this.id = id;
         this.client = client;

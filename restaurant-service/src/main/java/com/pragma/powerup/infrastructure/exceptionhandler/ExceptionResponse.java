@@ -17,6 +17,8 @@ public enum ExceptionResponse {
     CANT_CANCEL_ORDER("Order can't be cancelled, contact the restaurant"),
     WRONG_ORDER_CLIENT("Client logged must be the same client from the order"),
     WRONG_DISH_ORDER("Dish requested must be from the same order's restaurant"),
+    INVALID_PAGE_NUMBER("Minimum page number its 0"),
+    INVALID_PAGE_SIZE("Minimum page size its 1"),
     NEW_STATUS_INVALID("The new status it's invalid for this order. Check flowchart");
 
     private final String message;
